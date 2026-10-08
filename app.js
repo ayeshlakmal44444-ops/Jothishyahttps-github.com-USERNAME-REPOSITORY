@@ -52,14 +52,171 @@ const NODE_SYMBOLS = {
   Ketu: { key: "Ketu", si: "කේතු", en: "Ketu", symbol: "☋" },
 };
 
-const PLACES = {
-  colombo: { si: "කොළඹ", en: "Colombo", lat: 6.9271, lon: 79.8612, utc: 5.5 },
-  kandy: { si: "මහනුවර", en: "Kandy", lat: 7.2906, lon: 80.6337, utc: 5.5 },
-  galle: { si: "ගාල්ල", en: "Galle", lat: 6.0329, lon: 80.2168, utc: 5.5 },
-  jaffna: { si: "යාපනය", en: "Jaffna", lat: 9.6615, lon: 80.0255, utc: 5.5 },
-  kurunegala: { si: "කුරුණෑගල", en: "Kurunegala", lat: 7.4863, lon: 80.3623, utc: 5.5 },
-  anuradhapura: { si: "අනුරාධපුර", en: "Anuradhapura", lat: 8.3114, lon: 80.4037, utc: 5.5 },
-};
+// Sri Lankan province, district and major-hospital directory used by the
+// browser-only location picker. Map clicks still allow any exact location.
+const SRI_LANKA_REGIONS = [
+  { key: "western", si: "බස්නාහිර පළාත", en: "Western Province", districts: [
+    { key: "colombo", si: "කොළඹ", en: "Colombo", lat: 6.9271, lon: 79.8612, hospitals: [
+      ["national-hospital-colombo", "ජාතික රෝහල ශ්‍රී ලංකා", "National Hospital of Sri Lanka", 6.9181, 79.8670],
+      ["lady-ridgeway", "රිජ්වේ ආර්යා ළමා රෝහල", "Lady Ridgeway Hospital for Children", 6.9210, 79.8678],
+      ["de-soyza-women", "ද සොයිසා කාන්තා රෝහල", "De Soysa Hospital for Women", 6.9185, 79.8645],
+      ["castle-street-women", "කැස්ල් වීදිය කාන්තා රෝහල", "Castle Street Hospital for Women", 6.9257, 79.8658],
+      ["colombo-south-teaching", "කොළඹ දකුණ ශික්ෂණ රෝහල", "Colombo South Teaching Hospital", 6.8790, 79.8847],
+      ["sjgh", "ශ්‍රී ජයවර්ධනපුර මහ රෝහල", "Sri Jayewardenepura General Hospital", 6.9063, 79.9116],
+      ["nawaloka", "නවලෝක රෝහල", "Nawaloka Hospital", 6.9187, 79.8568],
+      ["durdans", "ඩර්ඩන්ස් රෝහල", "Durdans Hospital", 6.9013, 79.8532],
+    ] },
+    { key: "gampaha", si: "ගම්පහ", en: "Gampaha", lat: 7.0917, lon: 80.0006, hospitals: [
+      ["gampaha-general", "ගම්පහ දිස්ත්‍රික් මහ රෝහල", "District General Hospital Gampaha", 7.0950, 79.9960],
+      ["negombo-district", "මීගමුව දිස්ත්‍රික් මහ රෝහල", "District General Hospital Negombo", 7.2090, 79.8380],
+      ["wathupitiwala-base", "වතුපිටිවල මූලික රෝහල", "Base Hospital Wathupitiwala", 7.1450, 80.0470],
+    ] },
+    { key: "kalutara", si: "කළුතර", en: "Kalutara", lat: 6.5854, lon: 79.9607, hospitals: [
+      ["kalutara-nagoda", "කළුතර නාගොඩ මහ රෝහල", "District General Hospital Kalutara", 6.5870, 79.9680],
+      ["panadura-base", "පානදුර මූලික රෝහල", "Base Hospital Panadura", 6.7130, 79.9070],
+      ["horana-base", "හොරණ මූලික රෝහල", "Base Hospital Horana", 6.7190, 80.0620],
+    ] },
+  ] },
+  { key: "central", si: "මධ්‍යම පළාත", en: "Central Province", districts: [
+    { key: "kandy", si: "මහනුවර", en: "Kandy", lat: 7.2906, lon: 80.6337, hospitals: [
+      ["national-kandy", "මහනුවර ජාතික රෝහල", "National Hospital Kandy", 7.2870, 80.6380],
+      ["peradeniya-teaching", "පේරාදෙණිය ශික්ෂණ රෝහල", "Teaching Hospital Peradeniya", 7.2700, 80.5990],
+      ["sirimavo-childrens", "සිරිමාවෝ බණ්ඩාරනායක ළමා රෝහල", "Sirimavo Bandaranaike Specialized Children's Hospital", 7.2700, 80.5970],
+    ] },
+    { key: "matale", si: "මාතලේ", en: "Matale", lat: 7.4675, lon: 80.6234, hospitals: [
+      ["matale-general", "මාතලේ දිස්ත්‍රික් මහ රෝහල", "District General Hospital Matale", 7.4710, 80.6220],
+      ["dambulla-base", "දඹුල්ල මූලික රෝහල", "Base Hospital Dambulla", 7.8730, 80.6510],
+    ] },
+    { key: "nuwara-eliya", si: "නුවරඑළිය", en: "Nuwara Eliya", lat: 6.9497, lon: 80.7891, hospitals: [
+      ["nuwara-eliya-district", "නුවරඑළිය දිස්ත්‍රික් මහ රෝහල", "District General Hospital Nuwara Eliya", 6.9650, 80.7670],
+      ["dickoya-base", "දික්ඔය මූලික රෝහල", "Base Hospital Dickoya", 6.8790, 80.6680],
+    ] },
+  ] },
+  { key: "southern", si: "දකුණු පළාත", en: "Southern Province", districts: [
+    { key: "galle", si: "ගාල්ල", en: "Galle", lat: 6.0329, lon: 80.2168, hospitals: [
+      ["karapitiya-teaching", "කරාපිටිය ශික්ෂණ රෝහල", "Teaching Hospital Karapitiya", 6.0630, 80.2550],
+      ["mahamodara-maternity", "මහමෝදර මාතෘ රෝහල", "Mahamodara Maternity Hospital", 6.0430, 80.2190],
+      ["elpitiya-base", "ඇල්පිටිය මූලික රෝහල", "Base Hospital Elpitiya", 6.2970, 80.1710],
+    ] },
+    { key: "matara", si: "මාතර", en: "Matara", lat: 5.9549, lon: 80.5550, hospitals: [
+      ["matara-district", "මාතර දිස්ත්‍රික් මහ රෝහල", "District General Hospital Matara", 5.9500, 80.5480],
+      ["akuressa-base", "අකුරැස්ස මූලික රෝහල", "Base Hospital Akuressa", 6.0990, 80.4690],
+      ["dikwella-base", "දික්වැල්ල මූලික රෝහල", "Base Hospital Dickwella", 5.9660, 80.7040],
+    ] },
+    { key: "hambantota", si: "හම්බන්තොට", en: "Hambantota", lat: 6.1429, lon: 81.1212, hospitals: [
+      ["hambantota-district", "හම්බන්තොට දිස්ත්‍රික් මහ රෝහල", "District General Hospital Hambantota", 6.1380, 81.1190],
+      ["tangalle-base", "තංගල්ල මූලික රෝහල", "Base Hospital Tangalle", 6.0240, 80.7940],
+      ["beliatta-base", "බෙලිඅත්ත මූලික රෝහල", "Base Hospital Beliatta", 6.0490, 80.7330],
+    ] },
+  ] },
+  { key: "northern", si: "උතුරු පළාත", en: "Northern Province", districts: [
+    { key: "jaffna", si: "යාපනය", en: "Jaffna", lat: 9.6615, lon: 80.0255, hospitals: [
+      ["jaffna-teaching", "යාපනය ශික්ෂණ රෝහල", "Teaching Hospital Jaffna", 9.6710, 80.0250],
+      ["point-pedro-base", "පේදුරුතුඩුව මූලික රෝහල", "Base Hospital Point Pedro", 9.8190, 80.2340],
+      ["chavakachcheri-base", "චාවකච්චේරි මූලික රෝහල", "Base Hospital Chavakachcheri", 9.6600, 80.1610],
+    ] },
+    { key: "kilinochchi", si: "කිලිනොච්චි", en: "Kilinochchi", lat: 9.3803, lon: 80.3770, hospitals: [
+      ["kilinochchi-district", "කිලිනොච්චි දිස්ත්‍රික් මහ රෝහල", "District General Hospital Kilinochchi", 9.3850, 80.3940],
+      ["poonakary-base", "පූනකරි මූලික රෝහල", "Base Hospital Poonakary", 9.3190, 80.1010],
+    ] },
+    { key: "mannar", si: "මන්නාරම", en: "Mannar", lat: 8.9810, lon: 79.9044, hospitals: [
+      ["mannar-district", "මන්නාරම දිස්ත්‍රික් මහ රෝහල", "District General Hospital Mannar", 8.9810, 79.9040],
+      ["madhu-base", "මඩු මූලික රෝහල", "Base Hospital Madhu", 8.8550, 80.2050],
+    ] },
+    { key: "mullaitivu", si: "මුලතිව්", en: "Mullaitivu", lat: 9.2671, lon: 80.8128, hospitals: [
+      ["mullaitivu-district", "මුලතිව් දිස්ත්‍රික් මහ රෝහල", "District General Hospital Mullaitivu", 9.2670, 80.8130],
+    ] },
+    { key: "vavuniya", si: "වවුනියාව", en: "Vavuniya", lat: 8.7514, lon: 80.4971, hospitals: [
+      ["vavuniya-district", "වවුනියාව දිස්ත්‍රික් මහ රෝහල", "District General Hospital Vavuniya", 8.7550, 80.4910],
+      ["cheddikulam-base", "චෙඩ්ඩිකුලම් මූලික රෝහල", "Base Hospital Cheddikulam", 8.7500, 80.2800],
+    ] },
+  ] },
+  { key: "eastern", si: "නැගෙනහිර පළාත", en: "Eastern Province", districts: [
+    { key: "batticaloa", si: "මඩකලපුව", en: "Batticaloa", lat: 7.7310, lon: 81.6747, hospitals: [
+      ["batticaloa-teaching", "මඩකලපුව ශික්ෂණ රෝහල", "Teaching Hospital Batticaloa", 7.7250, 81.6950],
+      ["kalmunai-north-base", "කල්මුණේ උතුර මූලික රෝහල", "Base Hospital Kalmunai North", 7.4240, 81.8270],
+      ["valachchenai-base", "වාලච්චේන මූලික රෝහල", "Base Hospital Valachchenai", 7.9350, 81.5590],
+    ] },
+    { key: "ampara", si: "අම්පාර", en: "Ampara", lat: 7.2916, lon: 81.6720, hospitals: [
+      ["ampara-district", "අම්පාර දිස්ත්‍රික් මහ රෝහල", "District General Hospital Ampara", 7.2930, 81.6730],
+      ["kalmunai-base", "කල්මුණේ මූලික රෝහල", "Base Hospital Kalmunai", 7.4160, 81.8240],
+      ["dehiattakandiya-base", "දෙහිඅත්තකණ්ඩිය මූලික රෝහල", "Base Hospital Dehiattakandiya", 7.5260, 81.1910],
+    ] },
+    { key: "trincomalee", si: "ත්‍රිකුණාමලය", en: "Trincomalee", lat: 8.5874, lon: 81.2152, hospitals: [
+      ["trincomalee-district", "ත්‍රිකුණාමලය දිස්ත්‍රික් මහ රෝහල", "District General Hospital Trincomalee", 8.5920, 81.2140],
+      ["kantale-base", "කන්තලේ මූලික රෝහල", "Base Hospital Kantale", 8.3560, 81.0020],
+      ["muttur-base", "මුතුර් මූලික රෝහල", "Base Hospital Muttur", 8.4500, 81.2700],
+    ] },
+  ] },
+  { key: "north-western", si: "වයඹ පළාත", en: "North Western Province", districts: [
+    { key: "kurunegala", si: "කුරුණෑගල", en: "Kurunegala", lat: 7.4863, lon: 80.3623, hospitals: [
+      ["kurunegala-teaching", "කුරුණෑගල ශික්ෂණ රෝහල", "Teaching Hospital Kurunegala", 7.4810, 80.3610],
+      ["kuliyapitiya-district", "කූලියාපිටිය දිස්ත්‍රික් මහ රෝහල", "District General Hospital Kuliyapitiya", 7.4690, 80.0410],
+      ["dambadeniya-base", "දඹදෙණිය මූලික රෝහල", "Base Hospital Dambadeniya", 7.3670, 80.1620],
+    ] },
+    { key: "puttalam", si: "පුත්තලම", en: "Puttalam", lat: 8.0362, lon: 79.8283, hospitals: [
+      ["puttalam-district", "පුත්තලම දිස්ත්‍රික් මහ රෝහල", "District General Hospital Puttalam", 8.0410, 79.8330],
+      ["chilaw-base", "හලාවත මූලික රෝහල", "Base Hospital Chilaw", 7.5750, 79.7950],
+      ["marawila-base", "මාරවිල මූලික රෝහල", "Base Hospital Marawila", 7.4100, 79.8220],
+    ] },
+  ] },
+  { key: "north-central", si: "උතුරු මැද පළාත", en: "North Central Province", districts: [
+    { key: "anuradhapura", si: "අනුරාධපුර", en: "Anuradhapura", lat: 8.3114, lon: 80.4037, hospitals: [
+      ["anuradhapura-teaching", "අනුරාධපුර ශික්ෂණ රෝහල", "Teaching Hospital Anuradhapura", 8.3130, 80.4070],
+      ["medawachchiya-base", "මැදවච්චිය මූලික රෝහල", "Base Hospital Medawachchiya", 8.5450, 80.4950],
+      ["kekirawa-base", "කැකිරාව මූලික රෝහල", "Base Hospital Kekirawa", 8.0360, 80.5960],
+    ] },
+    { key: "polonnaruwa", si: "පොළොන්නරුව", en: "Polonnaruwa", lat: 7.9403, lon: 81.0188, hospitals: [
+      ["polonnaruwa-district", "පොළොන්නරුව දිස්ත්‍රික් මහ රෝහල", "District General Hospital Polonnaruwa", 7.9450, 81.0180],
+      ["hingurakgoda-base", "හිඟුරක්ගොඩ මූලික රෝහල", "Base Hospital Hingurakgoda", 8.0400, 80.9610],
+      ["medirigiriya-base", "මැදිරිගිරිය මූලික රෝහල", "Base Hospital Medirigiriya", 8.1660, 80.9860],
+    ] },
+  ] },
+  { key: "uva", si: "ඌව පළාත", en: "Uva Province", districts: [
+    { key: "badulla", si: "බදුල්ල", en: "Badulla", lat: 6.9934, lon: 81.0550, hospitals: [
+      ["badulla-general", "බදුල්ල මහ රෝහල", "General Hospital Badulla", 6.9920, 81.0560],
+      ["mahiyanganaya-base", "මහියංගනය මූලික රෝහල", "Base Hospital Mahiyanganaya", 7.3240, 81.0040],
+      ["welimada-base", "වැලිමඩ මූලික රෝහල", "Base Hospital Welimada", 6.9020, 80.9140],
+    ] },
+    { key: "monaragala", si: "මොණරාගල", en: "Monaragala", lat: 6.8728, lon: 81.3507, hospitals: [
+      ["monaragala-district", "මොණරාගල දිස්ත්‍රික් මහ රෝහල", "District General Hospital Monaragala", 6.8720, 81.3490],
+      ["wellawaya-base", "වැල්ලවාය මූලික රෝහල", "Base Hospital Wellawaya", 6.7330, 81.1010],
+      ["bibile-base", "බිබිලේ මූලික රෝහල", "Base Hospital Bibile", 7.1660, 81.2200],
+    ] },
+  ] },
+  { key: "sabaragamuwa", si: "සබරගමුව පළාත", en: "Sabaragamuwa Province", districts: [
+    { key: "ratnapura", si: "රත්නපුර", en: "Ratnapura", lat: 6.6828, lon: 80.3992, hospitals: [
+      ["ratnapura-teaching", "රත්නපුර ශික්ෂණ රෝහල", "Teaching Hospital Ratnapura", 6.6840, 80.3930],
+      ["balangoda-base", "බලංගොඩ මූලික රෝහල", "Base Hospital Balangoda", 6.6500, 80.7000],
+      ["embilipitiya-base", "ඇඹිලිපිටිය මූලික රෝහල", "Base Hospital Embilipitiya", 6.3430, 80.8490],
+    ] },
+    { key: "kegalle", si: "කෑගල්ල", en: "Kegalle", lat: 7.2513, lon: 80.3464, hospitals: [
+      ["kegalle-general", "කෑගල්ල මහ රෝහල", "General Hospital Kegalle", 7.2560, 80.3480],
+      ["mawanella-base", "මාවනැල්ල මූලික රෝහල", "Base Hospital Mawanella", 7.2510, 80.4530],
+      ["warakapola-base", "වරකාපොල මූලික රෝහල", "Base Hospital Warakapola", 7.2250, 80.1970],
+    ] },
+  ] },
+];
+
+const LOCATION_DIRECTORY = [];
+SRI_LANKA_REGIONS.forEach((province) => province.districts.forEach((district) => {
+  LOCATION_DIRECTORY.push({
+    key: district.key,
+    type: "district",
+    provinceKey: province.key,
+    districtKey: district.key,
+    si: district.si,
+    en: district.en,
+    lat: district.lat,
+    lon: district.lon,
+    utc: 5.5,
+  });
+  district.hospitals.forEach(([key, si, en, lat, lon]) => LOCATION_DIRECTORY.push({
+    key, type: "hospital", provinceKey: province.key, districtKey: district.key, si, en, lat, lon, utc: 5.5,
+  }));
+}));
+
+const PLACES = Object.fromEntries(LOCATION_DIRECTORY.map((place) => [place.key, place]));
 
 const TRANSLATIONS = {
   si: {
@@ -69,7 +226,7 @@ const TRANSLATIONS = {
     heroButton: "ජන්ම පත්‍රය ගණනය කරන්න <span>↗</span>", privateNote: "දත්ත save නොවේ", siderealNote: "Lahiri Sidereal",
     calcEyebrow: "01 / ගණනය", calcTitle: "ඔබේ උපන් තොරතුරු", calcLead: "නිවැරදි වේලාව සහ ස්ථානය භාවිතා කළ විට Lagna සහ houses වඩාත් නිවැරදි වේ.",
     dateLabel: "උපන් දිනය / Birth date", timeLabel: "උපන් වේලාව / Birth time", timeUnknown: "උපන් වේලාව නොදනී / I don’t know the exact time",
-    placeLabel: "උපන් ස්ථානය / Birth place", latitudeLabel: "Latitude", longitudeLabel: "Longitude", utcLabel: "UTC offset",
+    provinceLabel: "පළාත / Province", districtLabel: "දිස්ත්‍රික්කය / District", placeLabel: "උපන් ස්ථානය / Birth place", mapTitle: "Map එකෙන් උපන් ස්ථානය තෝරන්න", mapLead: "රෝහලක් තෝරන්න, search කරන්න, නැත්නම් map එකේ exact තැන click කරන්න.", mapChip: "දිස්ත්‍රික්ක 25", mapSearchPlaceholder: "රෝහල / නගරය සොයන්න", mapSearchButton: "සොයන්න", mapNote: "Map marker එකක් තෝරන්න හෝ map එක click කරලා coordinates ගන්න. Birth data server එකට යවන්නේ නැහැ.", latitudeLabel: "Latitude", longitudeLabel: "Longitude", utcLabel: "UTC offset",
     calculateButton: "ගණනය කරන්න", resetButton: "ආපසු හිස් කරන්න", resultEyebrow: "02 / ඔබේ ප්‍රතිඵල",
     engineWarning: "Astronomy Engine library එක load නොවුණා. Internet connection එක පරීක්ෂා කර නැවත උත්සාහ කරන්න.",
     lagnaLabel: "Lagna / ලග්නය", rashiLabel: "Rashi / රාශිය", nakshatraLabel: "Nakshatra / නැකත", dashaLabel: "Current Mahadasha",
@@ -93,7 +250,7 @@ const TRANSLATIONS = {
     heroLead: "Enter your birth date, time and place. Your Lagna, Rashi, Nakshatra and planetary positions are calculated in your browser using the Vedic/Sidereal method.",
     heroButton: "Calculate birth chart <span>↗</span>", privateNote: "Data is not saved", siderealNote: "Lahiri Sidereal",
     calcEyebrow: "01 / CALCULATE", calcTitle: "Your birth details", calcLead: "An exact time and place make the Lagna and houses more precise.",
-    dateLabel: "Birth date", timeLabel: "Birth time", timeUnknown: "I don’t know the exact time", placeLabel: "Birth place", latitudeLabel: "Latitude", longitudeLabel: "Longitude", utcLabel: "UTC offset",
+    dateLabel: "Birth date", timeLabel: "Birth time", timeUnknown: "I don’t know the exact time", provinceLabel: "Province", districtLabel: "District", placeLabel: "Birth place", mapTitle: "Choose your birth place on the map", mapLead: "Choose a hospital, search the directory, or click the exact point on the map.", mapChip: "25 districts", mapSearchPlaceholder: "Search hospital or city", mapSearchButton: "Search", mapNote: "Choose a marker or click the map for exact coordinates. Birth data is not sent to a server.", latitudeLabel: "Latitude", longitudeLabel: "Longitude", utcLabel: "UTC offset",
     calculateButton: "Calculate", resetButton: "Clear form", resultEyebrow: "02 / YOUR RESULTS", engineWarning: "The Astronomy Engine library could not load. Check your internet connection and try again.",
     lagnaLabel: "Lagna / Ascendant", rashiLabel: "Rashi / Moon sign", nakshatraLabel: "Nakshatra / Birth star", dashaLabel: "Current Mahadasha",
     chartTitle: "Birth chart", chartCaption: "Whole-sign houses", chartLegend: "Planets are shown in their sidereal signs.", planetTitle: "Planetary positions", planetHead: "Planet", signHead: "Sign", degreeHead: "Degree", houseHead: "House",
@@ -153,7 +310,7 @@ const NAKSHATRA_DETAILS = [
   ["වේගය, ආරම්භය සහ සුවපත් කිරීම", "Speed, beginnings and healing"], ["වගකීම, නිර්මාණය සහ දැඩි කැපවීම", "Responsibility, creation and deep commitment"], ["ගිනි, වෙනස්කම සහ පැහැදිලි කිරීම", "Fire, change and clarification"], ["වර්ධනය, සෞන්දර්යය සහ ස්ථාවරත්වය", "Growth, beauty and steadiness"], ["සෙවීම, චලනය සහ නව දැනුම", "Searching, movement and new knowledge"], ["කුණාටුව, අභියෝගය සහ සත්‍යය හෙළි කිරීම", "Storm, challenge and revealing truth"], ["නැවත පැමිණීම, ආරක්ෂාව සහ පුළුල් වීම", "Return, protection and expansion"], ["පෝෂණය, සේවය සහ ආරක්ෂාව", "Nourishment, service and protection"], ["අභ්‍යන්තර සංකීර්ණත්වය, හැඟීම් සහ සුව කිරීම", "Inner complexity, feeling and healing"], ["පාරම්පරික බලය, මූලයන් සහ ගෞරවය", "Ancestral power, roots and dignity"], ["ප්‍රීතිය, කලාව සහ ආකර්ෂණය", "Joy, art and attraction"], ["වගකීම, දක්ෂතාවය සහ සේවය", "Responsibility, skill and service"], ["කාර්යය, අත්කම් සහ සවිස්තර බුද්ධිය", "Craft, work and detailed intelligence"], ["නිර්මාණශීලී ගැඹුර සහ පරිවර්තනය", "Creative depth and transformation"], ["නිදහස, වාතය සහ ස්වාධීනත්වය", "Freedom, air and independence"], ["ඉලක්ක, හවුල්කාරිත්වය සහ ජයග්‍රහණය", "Purpose, partnership and achievement"], ["විශ්වාසය, මිත්‍රත්වය සහ පක්ෂපාතීත්වය", "Trust, friendship and loyalty"], ["අභ්‍යන්තර බලය, සීමා සහ පරිවර්තනය", "Inner power, boundaries and transformation"], ["මූලය, අතහැරීම සහ සත්‍ය සෙවීම", "Roots, release and truth-seeking"], ["ආශාව, ජයග්‍රහණය සහ රස විඳීම", "Desire, victory and enjoyment"], ["නැගීම, අරමුණ සහ විශ්වාසය", "Ascent, purpose and conviction"], ["ඇසීම, ඉගෙනීම සහ සංස්කෘතික මතකය", "Listening, learning and cultural memory"], ["රිද්මය, සම්පත් සහ නිර්මාණාත්මක කණ්ඩායම්", "Rhythm, resources and creative groups"], ["සුවපත් කිරීම, විද්‍යාව සහ රහස් දැනුම", "Healing, science and hidden knowledge"], ["ආත්මීය අදහස්, පරස්පරතාව සහ දර්ශනය", "Spiritual ideas, paradox and philosophy"], ["ඉවසීම, සුවපත් කිරීම සහ අභ්‍යන්තර ස්ථාවරත්වය", "Patience, healing and inner steadiness"], ["ගමන අවසන් කිරීම, කරුණාව සහ නව ආරම්භය", "Completion, compassion and a new beginning"],
 ];
 
-const state = { lang: "si", chart: null };
+const state = { lang: "si", chart: null, map: null, mapLayer: null, mapPlace: null, mapReady: false };
 const $ = (selector) => document.querySelector(selector);
 const $$ = (selector) => [...document.querySelectorAll(selector)];
 
@@ -176,7 +333,12 @@ function applyLanguage() {
     if (key === "heroTitle" || key === "heroButton") node.innerHTML = strings[key];
     else node.textContent = strings[key];
   });
+  $$('[data-i18n-placeholder]').forEach((node) => {
+    const key = node.dataset.i18nPlaceholder;
+    if (strings[key] !== undefined) node.placeholder = strings[key];
+  });
   document.documentElement.lang = state.lang === "si" ? "si" : "en";
+  if (state.mapReady) updateLocationSelects();
   if (state.chart) renderChart(state.chart);
 }
 
@@ -265,10 +427,141 @@ function dateFromLocal(dateText, timeText, utcOffset) {
   return new Date(Date.UTC(year, month - 1, day, hours, minutes) - offsetMinutes * 60000);
 }
 
+function provinceByKey(key) {
+  return SRI_LANKA_REGIONS.find((province) => province.key === key) || SRI_LANKA_REGIONS[0];
+}
+
+function districtByKey(province, key) {
+  return province.districts.find((district) => district.key === key) || province.districts[0];
+}
+
+function placeName(place) {
+  return state.lang === "si" ? place.si : place.en;
+}
+
+function updateLocationSelects() {
+  const provinceSelect = $("#provinceSelect");
+  const districtSelect = $("#districtSelect");
+  const placeSelect = $("#birthPlace");
+  if (!provinceSelect || !districtSelect || !placeSelect) return;
+
+  const previousProvince = provinceSelect.value || "western";
+  const province = provinceByKey(previousProvince);
+  provinceSelect.innerHTML = SRI_LANKA_REGIONS.map((item) => `<option value="${item.key}">${item.si} / ${item.en}</option>`).join("");
+  provinceSelect.value = province.key;
+
+  const previousDistrict = districtSelect.value;
+  const district = districtByKey(province, previousDistrict);
+  districtSelect.innerHTML = province.districts.map((item) => `<option value="${item.key}">${item.si} / ${item.en}</option>`).join("");
+  districtSelect.value = district.key;
+
+  const previousPlace = placeSelect.value;
+  const directoryItems = LOCATION_DIRECTORY.filter((place) => place.districtKey === district.key);
+  const districtOption = `<option value="${district.key}">${district.si} / ${district.en} — ${state.lang === "si" ? "දිස්ත්‍රික්ක මධ්‍යස්ථානය" : "District centre"}</option>`;
+  const hospitalOptions = directoryItems.filter((place) => place.type === "hospital").map((place) => `<option value="${place.key}">${place.si} / ${place.en}</option>`).join("");
+  placeSelect.innerHTML = `${districtOption}<optgroup label="${state.lang === "si" ? "රෝහල්" : "Hospitals"}">${hospitalOptions}</optgroup><option value="custom">${state.lang === "si" ? "Map point / වෙනත් coordinates" : "Map point / Custom coordinates"}</option>`;
+  placeSelect.value = PLACES[previousPlace] && PLACES[previousPlace].districtKey === district.key ? previousPlace : district.key;
+  $("#customLocation").classList.toggle("is-hidden", placeSelect.value !== "custom");
+  if (state.mapReady) renderMapMarkers();
+}
+
+function setMapMessage(siText, enText) {
+  const node = $("#mapMessage");
+  if (node) node.textContent = state.lang === "si" ? siText : enText;
+}
+
+function focusMapPlace(place) {
+  if (!state.mapReady || !state.map) return;
+  state.map.setView([place.lat, place.lon], Math.max(state.map.getZoom(), 11), { animate: true });
+}
+
+function chooseDirectoryPlace(key) {
+  const place = PLACES[key];
+  if (!place) return;
+  state.mapPlace = place;
+  $("#provinceSelect").value = place.provinceKey;
+  updateLocationSelects();
+  $("#districtSelect").value = place.districtKey;
+  updateLocationSelects();
+  $("#birthPlace").value = key;
+  $("#customLocation").classList.add("is-hidden");
+  focusMapPlace(place);
+  setMapMessage(`${place.si} තෝරා ඇත.`, `${place.en} selected.`);
+}
+
+function chooseMapPoint(lat, lon) {
+  const point = { key: "custom", si: "Map point", en: "Map point", lat, lon, utc: 5.5 };
+  state.mapPlace = point;
+  $("#birthPlace").value = "custom";
+  $("#latitude").value = lat.toFixed(5);
+  $("#longitude").value = lon.toFixed(5);
+  $("#utcOffset").value = "5.5";
+  $("#customLocation").classList.remove("is-hidden");
+  setMapMessage(`Map point තෝරා ඇත: ${lat.toFixed(5)}, ${lon.toFixed(5)}.`, `Map point selected: ${lat.toFixed(5)}, ${lon.toFixed(5)}.`);
+  renderMapMarkers();
+}
+
+function renderMapMarkers() {
+  if (!state.mapReady || !state.mapLayer) return;
+  state.mapLayer.clearLayers();
+  LOCATION_DIRECTORY.forEach((place) => {
+    const marker = L.circleMarker([place.lat, place.lon], {
+      radius: place.type === "district" ? 7 : 5,
+      color: place.type === "district" ? "#7f3d64" : "#c18a49",
+      fillColor: place.type === "district" ? "#7f3d64" : "#e7b66e",
+      fillOpacity: 0.85,
+      weight: 2,
+    });
+    marker.bindTooltip(placeName(place), { direction: "top", offset: [0, -4] });
+    marker.on("click", () => chooseDirectoryPlace(place.key));
+    marker.addTo(state.mapLayer);
+  });
+  if (state.mapPlace && state.mapPlace.key === "custom") {
+    L.circleMarker([state.mapPlace.lat, state.mapPlace.lon], {
+      radius: 9, color: "#2b1f2a", fillColor: "#f4d39a", fillOpacity: 1, weight: 3,
+    }).bindTooltip(state.lang === "si" ? "තෝරාගත් map point" : "Selected map point", { direction: "top" }).addTo(state.mapLayer);
+  }
+}
+
+function searchMapDirectory() {
+  const query = $("#mapSearch").value.trim().toLocaleLowerCase();
+  if (!query) return;
+  const match = LOCATION_DIRECTORY.find((place) => `${place.si} ${place.en}`.toLocaleLowerCase().includes(query));
+  if (!match) {
+    setMapMessage("රෝහල/නගරය directory එකේ හමු නොවුණා. Map එක click කර exact තැන තෝරන්න.", "No directory match. Click the map to choose the exact place.");
+    return;
+  }
+  chooseDirectoryPlace(match.key);
+}
+
+function initLocationPicker() {
+  updateLocationSelects();
+  if (!window.L || !$("#birthMap")) return;
+  state.map = L.map("birthMap", { scrollWheelZoom: false }).setView([7.8731, 80.7718], 7.4);
+  L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
+    maxZoom: 19,
+    attribution: "© OpenStreetMap contributors",
+  }).addTo(state.map);
+  state.mapLayer = L.layerGroup().addTo(state.map);
+  state.mapReady = true;
+  renderMapMarkers();
+  state.map.on("click", (event) => chooseMapPoint(event.latlng.lat, event.latlng.lng));
+  setTimeout(() => state.map.invalidateSize(), 100);
+}
+
 function selectedLocation() {
   const key = $("#birthPlace").value;
   if (key !== "custom") return { ...PLACES[key], key };
-  return { key: "custom", si: "Custom", en: "Custom", lat: Number($("#latitude").value), lon: Number($("#longitude").value), utc: Number($("#utcOffset").value) };
+  const mapPoint = state.mapPlace && state.mapPlace.key === "custom" ? state.mapPlace : null;
+  return {
+    key: "custom",
+    si: "Map point",
+    en: "Map point",
+    lat: Number($("#latitude").value),
+    lon: Number($("#longitude").value),
+    utc: Number($("#utcOffset").value),
+    ...(mapPoint || {}),
+  };
 }
 
 function computeDasha(birthDate, moonLongitude) {
@@ -485,6 +778,8 @@ function resetForm() {
   $("#chartForm").reset();
   $("#birthTime").disabled = false;
   $("#customLocation").classList.add("is-hidden");
+  state.mapPlace = null;
+  updateLocationSelects();
   $("#results").classList.add("is-hidden");
   showMessage("");
   state.chart = null;
@@ -495,9 +790,37 @@ $("#languageToggle").addEventListener("click", () => {
   applyLanguage();
 });
 
-$("#birthPlace").addEventListener("change", (event) => {
-  $("#customLocation").classList.toggle("is-hidden", event.target.value !== "custom");
+$("#provinceSelect").addEventListener("change", (event) => {
+  $("#districtSelect").value = provinceByKey(event.target.value).districts[0].key;
+  updateLocationSelects();
 });
+
+$("#districtSelect").addEventListener("change", () => {
+  updateLocationSelects();
+  const district = districtByKey(provinceByKey($("#provinceSelect").value), $("#districtSelect").value);
+  chooseDirectoryPlace(district.key);
+});
+
+$("#birthPlace").addEventListener("change", (event) => {
+  if (event.target.value === "custom") {
+    state.mapPlace = null;
+    $("#customLocation").classList.remove("is-hidden");
+    setMapMessage("Map එක click කරලා exact point එකක් තෝරන්න හෝ coordinates ඇතුළත් කරන්න.", "Click the map for an exact point or enter coordinates manually.");
+    return;
+  }
+  chooseDirectoryPlace(event.target.value);
+});
+
+$("#mapSearchButton").addEventListener("click", searchMapDirectory);
+$("#mapSearch").addEventListener("keydown", (event) => {
+  if (event.key === "Enter") {
+    event.preventDefault();
+    searchMapDirectory();
+  }
+});
+
+$("#latitude").addEventListener("input", () => { state.mapPlace = null; });
+$("#longitude").addEventListener("input", () => { state.mapPlace = null; });
 
 $("#timeUnknown").addEventListener("change", (event) => {
   $("#birthTime").disabled = event.target.checked;
@@ -528,4 +851,5 @@ $("#chartForm").addEventListener("submit", (event) => {
   }
 });
 
+initLocationPicker();
 applyLanguage();

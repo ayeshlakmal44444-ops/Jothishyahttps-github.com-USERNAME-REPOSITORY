@@ -14,8 +14,15 @@
       href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Noto+Sans+Sinhala:wght@400;500;600;700&display=swap"
       rel="stylesheet"
     />
+    <link
+      rel="stylesheet"
+      href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+      integrity="sha256-p4NxAoJBhIINfQ3e5jJ0c8Yl2v5xD1b0tYtM4N8kRrM="
+      crossorigin=""
+    />
     <link rel="stylesheet" href="styles.css" />
     <script src="https://cdn.jsdelivr.net/npm/astronomy-engine@2.1.2/astronomy.browser.min.js"></script>
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
     <script defer src="app.js"></script>
   </head>
   <body>
@@ -89,18 +96,37 @@
             <span data-i18n="timeUnknown">උපන් වේලාව නොදනී / I don’t know the exact time</span>
           </label>
 
+          <div class="location-select-grid">
+            <label class="field">
+              <span data-i18n="provinceLabel">පළාත / Province</span>
+              <select id="provinceSelect" name="province"></select>
+            </label>
+            <label class="field">
+              <span data-i18n="districtLabel">දිස්ත්‍රික්කය / District</span>
+              <select id="districtSelect" name="district"></select>
+            </label>
+          </div>
+
           <label class="field">
             <span data-i18n="placeLabel">උපන් ස්ථානය / Birth place</span>
-            <select id="birthPlace" name="birthPlace">
-              <option value="colombo">කොළඹ / Colombo</option>
-              <option value="kandy">මහනුවර / Kandy</option>
-              <option value="galle">ගාල්ල / Galle</option>
-              <option value="jaffna">යාපනය / Jaffna</option>
-              <option value="kurunegala">කුරුණෑගල / Kurunegala</option>
-              <option value="anuradhapura">අනුරාධපුර / Anuradhapura</option>
-              <option value="custom">වෙනත් ස්ථානයක් / Custom coordinates</option>
-            </select>
+            <select id="birthPlace" name="birthPlace"></select>
           </label>
+
+          <div class="map-picker">
+            <div class="map-picker-head">
+              <div>
+                <strong data-i18n="mapTitle">Map එකෙන් උපන් ස්ථානය තෝරන්න</strong>
+                <p data-i18n="mapLead">රෝහලක් තෝරන්න, search කරන්න, නැත්නම් map එකේ exact තැන click කරන්න.</p>
+              </div>
+              <span class="map-chip" data-i18n="mapChip">25 දිස්ත්‍රික්ක</span>
+            </div>
+            <div class="map-search-row">
+              <input id="mapSearch" type="search" placeholder="රෝහල / නගරය සොයන්න" data-i18n-placeholder="mapSearchPlaceholder" />
+              <button id="mapSearchButton" class="button button-ghost button-small" type="button" data-i18n="mapSearchButton">සොයන්න</button>
+            </div>
+            <div id="birthMap" class="birth-map" role="application" aria-label="Sri Lanka birth place map"></div>
+            <p id="mapMessage" class="map-message" data-i18n="mapNote">Map marker එකක් තෝරන්න හෝ map එක click කරලා coordinates ගන්න. Birth data server එකට යවන්නේ නැහැ.</p>
+          </div>
 
           <div id="customLocation" class="custom-location is-hidden">
             <label class="field">

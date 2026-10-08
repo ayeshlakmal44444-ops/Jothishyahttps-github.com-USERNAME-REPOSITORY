@@ -128,11 +128,23 @@ h1 em { color: var(--plum); font-style: normal; }
 .section-heading > p:last-child { color: var(--muted); font-family: var(--font-si); font-size: 0.92rem; }
 .calculator-card, .panel, .summary-card, .method-card, .faq-list { background: var(--card); border: 1px solid var(--line); box-shadow: var(--shadow); }
 .calculator-card { padding: 30px; border-radius: var(--radius-lg); }
-.form-grid, .custom-location { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px; }
+.form-grid, .custom-location, .location-select-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px; }
 .custom-location { grid-template-columns: repeat(3, minmax(0, 1fr)); margin-top: 16px; }
 .field { display: grid; gap: 7px; margin-bottom: 17px; color: var(--muted); font-size: 0.75rem; font-weight: 600; }
 .field input, .field select { width: 100%; min-height: 48px; padding: 0 13px; color: var(--ink); background: #fff; border: 1px solid var(--line); border-radius: 12px; outline: none; }
 .field input:focus, .field select:focus { border-color: var(--plum); box-shadow: 0 0 0 4px rgba(127, 61, 100, 0.1); }
+.map-picker { margin: 2px 0 18px; padding: 16px; background: #fbf7f1; border: 1px solid #eadfd4; border-radius: 16px; }
+.map-picker-head { display: flex; align-items: start; justify-content: space-between; gap: 16px; margin-bottom: 12px; }
+.map-picker-head strong { color: var(--plum-dark); font-size: 0.9rem; }
+.map-picker-head p { margin: 5px 0 0; color: var(--muted); font-family: var(--font-si); font-size: 0.72rem; line-height: 1.6; }
+.map-chip { padding: 6px 9px; color: var(--sage); background: #e7efe9; border-radius: 999px; font-size: 0.63rem; font-weight: 700; white-space: nowrap; }
+.map-search-row { display: flex; gap: 8px; margin-bottom: 10px; }
+.map-search-row input { flex: 1; min-height: 42px; padding: 0 12px; color: var(--ink); background: #fff; border: 1px solid var(--line); border-radius: 10px; outline: none; }
+.map-search-row input:focus { border-color: var(--plum); box-shadow: 0 0 0 4px rgba(127, 61, 100, 0.1); }
+.button-small { min-height: 42px; padding: 0 14px; font-size: 0.72rem; }
+.birth-map { height: 330px; overflow: hidden; border: 1px solid #d9c9b8; border-radius: 13px; z-index: 0; }
+.map-message { min-height: 20px; margin: 9px 0 0; color: var(--muted); font-family: var(--font-si); font-size: 0.68rem; line-height: 1.55; }
+.leaflet-control-attribution { font-size: 9px !important; }
 .checkbox-row { display: inline-flex; align-items: center; gap: 9px; margin: 0 0 18px; color: var(--muted); font-size: 0.78rem; }
 .checkbox-row input { accent-color: var(--plum); }
 .form-actions { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 6px; }
@@ -236,7 +248,7 @@ details p { max-width: 700px; margin: 12px 0 0; color: var(--muted); font-family
   .section-shell { width: min(100% - 32px, 560px); }
   .hero { padding-top: 52px; padding-bottom: 52px; }.hero-art { min-height: 270px; }.hero-card { top: 72px; transform: translateX(-50%) scale(0.8); }
   h1 { font-size: clamp(2.6rem, 14vw, 4.1rem); }.hero-lede { font-size: 0.88rem; }.hero-notes { flex-direction: column; gap: 8px; }
-  .calculator-section, .method-section, .faq-section { padding: 58px 0; }.calculator-card, .panel { padding: 19px; }.form-grid, .custom-location, .method-grid { grid-template-columns: 1fr; }.custom-location { gap: 0; }
+  .calculator-section, .method-section, .faq-section { padding: 58px 0; }.calculator-card, .panel { padding: 19px; }.form-grid, .custom-location, .location-select-grid, .method-grid { grid-template-columns: 1fr; }.custom-location { gap: 0; }.map-picker { padding: 13px; }.map-picker-head { display: block; }.map-chip { display: inline-block; margin-top: 9px; }.map-search-row { display: grid; grid-template-columns: 1fr auto; }.birth-map { height: 285px; }
   .results-heading { display: block; }.method-badge { display: inline-block; margin-top: 12px; }.summary-grid { gap: 9px; }.summary-card { min-height: 125px; padding: 15px; }.summary-label { margin-bottom: 13px; font-size: 0.62rem; }.summary-card strong { font-size: 1.02rem; }
   .reading-grid, .reading-cards { grid-template-columns: 1fr; }.house-reading-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }.reading-block { padding: 15px; }
   .south-chart { max-width: 100%; }.chart-cell { min-height: 58px; padding: 5px; }.chart-cell .sign-name { font-size: 0.55rem; }.planet-badge { font-size: 0.48rem; }.dasha-timeline { grid-template-columns: repeat(5, 132px); }.result-disclaimer { display: block; }.result-disclaimer strong { display: block; margin-bottom: 5px; }
