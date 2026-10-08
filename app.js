@@ -83,6 +83,9 @@ const TRANSLATIONS = {
     faqTwoQ: "වේලාව නොදන්නේ නම්?", faqTwoA: "Moon sign සහ planetary signs පෙන්විය හැකි නමුත් Lagna සහ houses provisional ලෙස සලකන්න. හොඳම ප්‍රතිඵලයට birth certificate එකේ වේලාව භාවිතා කරන්න.",
     faqThreeQ: "මෙය scientific prediction එකක්ද?", faqThreeA: "නැහැ. මෙය Vedic astrology හි සම්ප්‍රදායික ගණනයක් පෙන්වන educational tool එකකි; future certainty එකක් ලෙස භාවිතා නොකරන්න.",
     footerText: "ඔබේ උපන් අහස, ඔබට තේරෙන භාෂාවකින්.",
+    readingTitle: "ඔබේ chart එකේ දිගු විස්තරය", readingCaption: "Traditional interpretation", themesTitle: "ප්‍රධාන තේමා",
+    nakshatraReadingTitle: "නැකතේ විස්තරය", planetReadingTitle: "ග්‍රහයන්ගේ දිගු විස්තර", houseReadingTitle: "භාව අනුව ජීවිත ක්ෂේත්‍ර",
+    dashaReadingTitle: "දැනට ක්‍රියාත්මක දශාවේ අර්ථය", readingFootnote: "මෙම විස්තර පාරම්පරික ජෝතිෂ්‍ය අර්ථකථන මත පදනම් වූ reflection guide එකකි; නිශ්චිත අනාගත අනාවැකියක් නොවේ.",
   },
   en: {
     brandSub: "Birth chart", navCalculator: "Calculate", navMethod: "Method", navFaq: "FAQ",
@@ -97,8 +100,58 @@ const TRANSLATIONS = {
     dashaTitle: "Vimshottari dasha", dashaCaption: "Birth-star based timing", disclaimerTitle: "Note", disclaimerText: "This is an educational calculation based on traditional/cultural astrology. Do not use it as the sole basis for medical, legal or financial decisions.",
     methodEyebrow: "03 / METHOD", methodTitle: "How is it calculated?", methodOneTitle: "Sky position", methodOneText: "The apparent ecliptic positions of the Sun, Moon and planets are calculated for the birth moment.", methodTwoTitle: "Sidereal correction", methodTwoText: "Lahiri ayanamsa converts tropical positions into sidereal signs.", methodThreeTitle: "Your chart", methodThreeText: "Lagna, houses, Nakshatra and Vimshottari dasha are shown in the same browser session.",
     faqEyebrow: "04 / FAQ", faqTitle: "Good to know", faqOneQ: "Is my birth data saved?", faqOneA: "No. This version calculates in your browser and does not send data to a server or database.", faqTwoQ: "What if I do not know the time?", faqTwoA: "Moon sign and planetary signs can still be shown, but treat the Lagna and houses as provisional. Use a birth certificate time when possible.", faqThreeQ: "Is this a scientific prediction?", faqThreeA: "No. It is an educational tool that presents a traditional Vedic astrology calculation; it is not a certainty about the future.", footerText: "Your birth sky, in a language you understand.",
+    readingTitle: "A longer reading of your chart", readingCaption: "Traditional interpretation", themesTitle: "Main themes", nakshatraReadingTitle: "Your Nakshatra", planetReadingTitle: "Detailed planet readings", houseReadingTitle: "Life areas by house", dashaReadingTitle: "What your current dasha represents", readingFootnote: "These paragraphs are a traditional astrology reflection guide, not a certain prediction of the future.",
   },
 };
+
+const SIGN_DETAILS = [
+  { elementSi: "ගිනි", elementEn: "Fire", modeSi: "චර", modeEn: "Cardinal", ruler: "Mars", overviewSi: "ක්‍රියාශීලී, ඉදිරියට යන සහ තීරණ ගැනීමට බිය නොවන ස්වභාවයක් පෙන්වයි. අලුත් දෙයක් ආරම්භ කිරීම, තරඟකාරී අවස්ථා සහ ස්වාධීන තීරණ ඔබේ ශක්තිය විය හැක.", overviewEn: "This is active, initiating and unafraid of decisions. Starting new things, meeting challenges and making independent choices can be natural strengths.", growthSi: "ඉක්මනින් ප්‍රතිචාර දක්වන විට ඉවසීම සහ අන් අයගේ වේගය පිළිබඳ අවබෝධය වර්ධනය කරගැනීම වැදගත් වේ.", growthEn: "When reactions are quick, patience and respect for other people's pace become important growth practices." },
+  { elementSi: "පෘථිවි", elementEn: "Earth", modeSi: "ස්ථිර", modeEn: "Fixed", ruler: "Venus", overviewSi: "ස්ථාවරත්වය, අගය සහ ප්‍රායෝගික ප්‍රතිඵල සොයන ස්වභාවයක් පෙන්වයි. ඉවසීමෙන් වැඩක් ගොඩනැගීම, සම්පත් රැකබලා ගැනීම සහ දැනෙන දේ අගය කිරීම ඔබේ ශක්තිය විය හැක.", overviewEn: "This seeks stability, value and practical results. Building patiently, caring for resources and appreciating what is tangible can be central strengths.", growthSi: "ආරක්ෂිත හුරුපුරුදු පරිසරයට ඇලී සිටීම වෙනුවට අවශ්‍ය වෙනස්කම් පිළිගැනීම වර්ධනයේ කොටසකි.", growthEn: "Growth comes from accepting necessary change instead of holding too tightly to what feels familiar." },
+  { elementSi: "වායු", elementEn: "Air", modeSi: "ද්විත්ව", modeEn: "Mutable", ruler: "Mercury", overviewSi: "කතාබහ, ඉගෙනීම, සම්බන්ධතා සහ අදහස් අතර සම්බන්ධතා දකින බුද්ධිමය ස්වභාවයක් පෙන්වයි. ප්‍රශ්න ඇසීම සහ තොරතුරු හුවමාරුව ඔබේ ශක්තිය විය හැක.", overviewEn: "This is curious, communicative and skilled at connecting ideas. Asking questions and exchanging information can be major strengths.", growthSi: "බොහෝ දේ එකවර ආරම්භ කිරීම වෙනුවට අවධානය එක තැනක තබා අවසන් කිරීම වැදගත් වේ.", growthEn: "Focus and completion matter, especially when many interesting possibilities appear at once." },
+  { elementSi: "ජල", elementEn: "Water", modeSi: "චර", modeEn: "Cardinal", ruler: "Moon", overviewSi: "රැකවරණය, පවුල, හැඟීම් සහ අභ්‍යන්තර ආරක්ෂාවට වටිනාකම දෙන ස්වභාවයක් පෙන්වයි. මිනිසුන්ගේ අවශ්‍යතා හඳුනාගැනීම ඔබේ ශක්තිය විය හැක.", overviewEn: "This values care, family, emotional safety and belonging. Reading what people need can be a natural strength.", growthSi: "අන් අයගේ හැඟීම් සම්පූර්ණයෙන්ම තමන්ගේ වගකීම ලෙස නොගෙන සීමා තබාගැනීම වැදගත් වේ.", growthEn: "Healthy boundaries help you care deeply without taking every feeling around you as your own responsibility." },
+  { elementSi: "ගිනි", elementEn: "Fire", modeSi: "ස්ථිර", modeEn: "Fixed", ruler: "Sun", overviewSi: "නිර්මාණශීලීත්වය, ගෞරවය, ප්‍රකාශනය සහ නායකත්වය පෙන්වන උණුසුම් ස්වභාවයක් ඇත. තමන්ගේ දක්ෂතාවය විශ්වාසයෙන් බෙදාගැනීම ශක්තියකි.", overviewEn: "This brings warmth, creativity, expression and leadership. Sharing talent with confidence can be a defining strength.", growthSi: "ප්‍රශංසාව අවශ්‍ය වීම අඩු කරගෙන, අන් අයගේ දායකත්වයද එකසේ අගය කිරීම වර්ධනය කරයි.", growthEn: "Growth comes from valuing other people's contributions as much as your own need to be seen." },
+  { elementSi: "පෘථිවි", elementEn: "Earth", modeSi: "ද්විත්ව", modeEn: "Mutable", ruler: "Mercury", overviewSi: "විස්තර, සේවය, ක්‍රමවත් වැඩ සහ ප්‍රායෝගික විසඳුම් සොයන ස්වභාවයක් පෙන්වයි. ගැටලුවක් කුඩා කොටස්වලට බෙදා විසඳීම ඔබේ ශක්තිය විය හැක.", overviewEn: "This notices detail, service, systems and practical solutions. Breaking a problem into useful parts can be a major strength.", growthSi: "පරිපූර්ණත්වය සොයමින් තමන්ට අධික විවේචනයක් නොකර, ප්‍රගතියද අගය කිරීම වැදගත් වේ.", growthEn: "It helps to value progress and kindness toward yourself instead of demanding impossible perfection." },
+  { elementSi: "වායු", elementEn: "Air", modeSi: "චර", modeEn: "Cardinal", ruler: "Venus", overviewSi: "සමබරතාව, සාධාරණත්වය, සම්බන්ධතා සහ අලංකාරය සොයන ස්වභාවයක් පෙන්වයි. දෙපාර්ශ්වයක් අතර පාලමක් වීම සහ රසවත් පරිසරයක් නිර්මාණය කිරීම ශක්තියකි.", overviewEn: "This seeks balance, fairness, relationship and beauty. Bridging two sides and creating a harmonious environment can be a strength.", growthSi: "සියල්ලන් සතුටු කිරීමට උත්සාහ කිරීම වෙනුවට තමන්ගේම තීරණයක් පැහැදිලිව ගැනීම වර්ධනය කරයි.", growthEn: "Growth comes from making a clear decision instead of constantly trying to keep everyone satisfied." },
+  { elementSi: "ජල", elementEn: "Water", modeSi: "ස්ථිර", modeEn: "Fixed", ruler: "Mars", overviewSi: "ගැඹුර, පර්යේෂණය, රහස්‍යතාව සහ වෙනස්වීම සමඟ සම්බන්ධ ස්වභාවයක් පෙන්වයි. දුෂ්කර අවස්ථාවක දරා සිටීම සහ ඇතුළත සත්‍යය සොයා යාම ශක්තියකි.", overviewEn: "This is deep, investigative and connected with privacy and transformation. Endurance during difficult transitions can be a major strength.", growthSi: "අතීත වේදනාව පාලනය කිරීමට වඩා එය පිළිගෙන අලුත් අවකාශයක් නිර්මාණය කිරීම වැදගත් වේ.", growthEn: "Growth comes from processing old pain and creating new space rather than trying to control every vulnerability." },
+  { elementSi: "ගිනි", elementEn: "Fire", modeSi: "ද්විත්ව", modeEn: "Mutable", ruler: "Jupiter", overviewSi: "දැනුම, අර්ථය, ගමන්බිමන් සහ විශාල දෘෂ්ටිය සොයන ස්වභාවයක් පෙන්වයි. ඉගෙනීම සහ අත්දැකීම් හරහා වර්ධනය වීම ශක්තියකි.", overviewEn: "This seeks knowledge, meaning, movement and a wider view. Learning through experience and exploration can be a defining strength.", growthSi: "විශාල අදහස් ප්‍රායෝගික සැලැස්මකට ගෙන ඒම සහ පොරොන්දු ඉටු කිරීම වැදගත් වේ.", growthEn: "Turning big ideas into practical plans and keeping promises makes this expansive energy useful." },
+  { elementSi: "පෘථිවි", elementEn: "Earth", modeSi: "චර", modeEn: "Cardinal", ruler: "Saturn", overviewSi: "වගකීම, ඉලක්ක, ඉවසීම සහ සමාජයේ ස්ථානය ගොඩනැගීමට කැපවන ස්වභාවයක් පෙන්වයි. දිගු කාලීන ප්‍රතිඵල සොයා වැඩ කිරීම ශක්තියකි.", overviewEn: "This values responsibility, goals, patience and building a meaningful place in society. Long-term effort can become a major strength.", growthSi: "වැඩ සහ තනතුරෙන් ඔබ්බට විවේකය, හැඟීම් සහ පෞද්ගලික ජීවිතයටද ඉඩ දීම වැදගත් වේ.", growthEn: "Growth comes from making room for rest, feelings and private life beyond achievement and status." },
+  { elementSi: "වායු", elementEn: "Air", modeSi: "ස්ථිර", modeEn: "Fixed", ruler: "Saturn", overviewSi: "ස්වාධීන අදහස්, සමාජය, නවෝත්පාදනය සහ මිතුරු ජාල ගැන අවධානය දෙන ස්වභාවයක් පෙන්වයි. වෙනස් ආකාරයකින් සිතීම ඔබේ ශක්තිය විය හැක.", overviewEn: "This values independent ideas, community, innovation and networks. Thinking differently can be a powerful strength.", growthSi: "අදහස් සහ මූලධර්ම පමණක් නොව, සමීප සම්බන්ධතාවල උණුසුමද රැකබලා ගැනීම වර්ධනය කරයි.", growthEn: "Growth comes from balancing principles and ideas with warmth in close relationships." },
+  { elementSi: "ජල", elementEn: "Water", modeSi: "ද්විත්ව", modeEn: "Mutable", ruler: "Jupiter", overviewSi: "සංවේදීත්වය, කරුණාව, කල්පනාව සහ ආධ්‍යාත්මික අර්ථය සොයන ස්වභාවයක් පෙන්වයි. කලාත්මක හෝ සුවපත් කරන කාර්යයන් ඔබේ ශක්තිය විය හැක.", overviewEn: "This is sensitive, compassionate, imaginative and drawn to spiritual meaning. Creative or healing work can be a natural strength.", growthSi: "අන් අයගේ ගැටලු තමන්ගේම ලෙස ගෙන යාම වෙනුවට පැහැදිලි සීමා සහ ප්‍රායෝගික ක්‍රම අවශ්‍ය වේ.", growthEn: "Clear boundaries and practical routines help when other people's problems feel too easy to absorb." },
+];
+
+const HOUSE_DETAILS = [
+  { si: "ශරීරය, පෞරුෂය සහ ජීවිතයට මුහුණ දෙන ආකාරය.", en: "Body, identity and the way you meet life." },
+  { si: "පවුල, කතා කිරීම, ආහාරය සහ පෞද්ගලික සම්පත්.", en: "Family, speech, food and personal resources." },
+  { si: "ඉගෙනීම, සහෝදර සම්බන්ධතා, ලිවීම සහ දෛනික උත්සාහය.", en: "Learning, siblings, writing and everyday effort." },
+  { si: "නිවස, මව, අභ්‍යන්තර ආරක්ෂාව සහ මනසේ සැනසීම.", en: "Home, mother, inner security and emotional roots." },
+  { si: "නිර්මාණශීලීත්වය, දරුවන්, ආදරය, සතුට සහ බුද්ධිමය ප්‍රකාශනය.", en: "Creativity, children, love, joy and intelligent expression." },
+  { si: "සේවය, සෞඛ්‍ය පුරුදු, වැඩබර සහ ගැටලු විසඳීම.", en: "Service, health routines, work burdens and problem-solving." },
+  { si: "විවාහය, හවුල්කාරිත්වය, ගනුදෙනු සහ ජනතාව සමඟ මුහුණට මුහුණ සම්බන්ධය.", en: "Marriage, partnership, agreements and one-to-one relationships." },
+  { si: "හවුල් සම්පත්, ගැඹුරු වෙනස්වීම්, විශ්වාසය සහ පර්යේෂණය.", en: "Shared resources, deep change, trust and research." },
+  { si: "උසස් අධ්‍යාපනය, ගුරුවරු, දුර ගමන් සහ ජීවිතයේ අර්ථය.", en: "Higher learning, teachers, long journeys and meaning." },
+  { si: "වෘත්තිය, වගකීම, ප්‍රසිද්ධිය සහ සමාජයේ දායකත්වය.", en: "Career, responsibility, public life and social contribution." },
+  { si: "මිතුරු සබඳතා, කණ්ඩායම්, බලාපොරොත්තු සහ ලැබීම්.", en: "Friends, groups, hopes and gains." },
+  { si: "විවේකය, විදේශ සම්බන්ධතා, සිහින, අභ්‍යන්තර ලෝකය සහ නිදහස් වීම.", en: "Rest, foreign links, dreams, the inner world and release." },
+];
+
+const PLANET_DETAILS = {
+  Sun: { si: "අභිමානය, ජීව ශක්තිය, අධිකාරිය සහ තමන්ගේ අනන්‍යතාවය.", en: "Identity, vitality, confidence and authority.", guidanceSi: "තමන්ගේ ආලෝකය පෙන්වමින් අන් අයගේ දායකත්වයද ගෞරව කරන්න.", guidanceEn: "Let your light be visible while respecting the contribution of others.", dashaSi: "රවි දශාව අනන්‍යතාවය, නායකත්වය, පියා/අධිකාරිය සහ තමන්ගේ කාර්යය පිළිබඳ අවධානය වැඩි කළ හැක.", dashaEn: "A Sun dasha can emphasize identity, leadership, father or authority and the work of becoming more self-directed." },
+  Moon: { si: "මනස, හැඟීම්, මව, පුරුදු සහ ආරක්ෂිත බව දැනෙන ආකාරය.", en: "Mind, feelings, mother, habits and emotional safety.", guidanceSi: "හැඟීම් ප්‍රතික්ෂේප නොකර ඒවාට නමක් දී නිසි විවේකය සහ රැකවරණය ලබාගන්න.", guidanceEn: "Name your feelings instead of dismissing them, and make room for rest and care.", dashaSi: "චන්ද්‍ර දශාව මනස, පවුල, නිවස, සම්බන්ධතා සහ අභ්‍යන්තර සැනසීම පිළිබඳ අවධානය ගෙන එයි.", dashaEn: "A Moon dasha often highlights mind, family, home, relationships and emotional belonging." },
+  Mars: { si: "ධෛර්යය, ක්‍රියාව, තරඟය, ශක්තිය සහ සීමා ආරක්ෂා කිරීම.", en: "Courage, action, competition, energy and boundaries.", guidanceSi: "ශක්තිය ගැටුමකට නොව නිර්මාණාත්මක ක්‍රියාවකට යොමු කරන්න.", guidanceEn: "Direct energy into constructive action instead of unnecessary conflict.", dashaSi: "කුජ දශාව ක්‍රියාකාරී තීරණ, ධෛර්යය, ඉඩම්/යන්ත්‍ර සහ සමහර විට උණුසුම් ගැටුම් ඉස්මතු කළ හැක.", dashaEn: "A Mars dasha can bring decisive action, courage, property or machinery themes and the need to manage heat in conflict." },
+  Mercury: { si: "බුද්ධිය, කතාබහ, වෙළඳාම, ගණනය සහ ඉගෙනීම.", en: "Intelligence, communication, trade, calculation and learning.", guidanceSi: "තොරතුරු රැස් කිරීම පමණක් නොව, එය පැහැදිලි පණිවිඩයක් බවට පත් කරන්න.", guidanceEn: "Turn gathered information into clear communication rather than endless analysis.", dashaSi: "බුධ දශාව ඉගෙනීම, ලිවීම, ව්‍යාපාර, software/ගණනය සහ සම්බන්ධතා වැඩි කළ හැක.", dashaEn: "A Mercury dasha can emphasize study, writing, commerce, technology and communication." },
+  Jupiter: { si: "දැනුම, ගුරුත්වය, විශ්වාසය, දරුවන් සහ වර්ධනය.", en: "Wisdom, teachers, faith, children and growth.", guidanceSi: "විශාල දෘෂ්ටිය ප්‍රායෝගික වගකීම් සමඟ සම්බන්ධ කරන්න.", guidanceEn: "Connect your wider vision with practical responsibility and follow-through.", dashaSi: "ගුරු දශාව අධ්‍යාපනය, ගුරුවරු, දරුවන්, උපදේශනය, විශ්වාසය සහ වර්ධනය පිළිබඳ අවස්ථා ගෙන එයි.", dashaEn: "A Jupiter dasha can emphasize education, teachers, children, guidance, faith and expansion." },
+  Venus: { si: "ආදරය, සබඳතා, සෞන්දර්යය, සංගීතය සහ සුවපහසුව.", en: "Love, relationships, beauty, music and comfort.", guidanceSi: "සුවපහසුව පමණක් නොව, සබඳතාවල වටිනාකම් සහ සත්‍යතාවද රැකගන්න.", guidanceEn: "Value authenticity and shared values in relationships, not comfort alone.", dashaSi: "ශුක්‍ර දශාව ආදරය, විවාහය, කලා, සුවපහසුව, වාහන/නිවාස සහ සමාජ ආකර්ෂණය ඉස්මතු කළ හැක.", dashaEn: "A Venus dasha can emphasize love, partnership, art, comfort, vehicles or homes and social attraction." },
+  Saturn: { si: "කාලය, වගකීම, ඉවසීම, සීමා සහ දිගුකාලීන පාඩම්.", en: "Time, responsibility, patience, limits and long-term lessons.", guidanceSi: "මන්දගාමී බව අසාර්ථකත්වයක් ලෙස නොගෙන, ශක්තිමත් පදනමක් ලෙස භාවිතා කරන්න.", guidanceEn: "Treat slowness as an invitation to build foundations, not as proof of failure.", dashaSi: "ශනි දශාව වගකීම්, වැඩ, ඉවසීම, ප්‍රමාද, සීමා සහ සැබෑ ප්‍රමුඛතා හඳුනාගැනීම ඉස්මතු කරයි.", dashaEn: "A Saturn dasha can emphasize duty, work, patience, delays, boundaries and real priorities." },
+  Uranus: { si: "අලුත් අදහස්, වෙනස සහ සාමාන්‍ය සීමාවෙන් පිටත සිතීම.", en: "Innovation, change and thinking outside convention.", guidanceSi: "නිදහස සොයන විට අනපේක්ෂිත තීරණවල ප්‍රතිඵලද සලකා බලන්න.", guidanceEn: "Seek freedom while still considering the consequences of sudden choices.", dashaSi: "යුරේනස් නවෝත්පාදනය, හදිසි වෙනස්කම් සහ පැරණි රටා බිඳ දැමීමේ තේමාවක් ලෙස කියවිය හැක.", dashaEn: "Uranus can be read as a symbol of innovation, sudden change and breaking old patterns." },
+  Neptune: { si: "කල්පනාව, කරුණාව, සිහින සහ සීමා මැකෙන අත්දැකීම්.", en: "Imagination, compassion, dreams and blurred boundaries.", guidanceSi: "කරුණාව සමඟ පැහැදිලි සීමා සහ සාක්ෂි මත පදනම් වූ තීරණ තබාගන්න.", guidanceEn: "Pair compassion with clear boundaries and evidence-based decisions.", dashaSi: "නෙප්චූන් කලා, අධ්‍යාත්මික සෙවීම සහ පැහැදිලි නොවන ආශාවන්ගේ සංකේතයක් ලෙස කියවිය හැක.", dashaEn: "Neptune can be read as a symbol of art, spiritual searching and unclear or idealized desires." },
+  Pluto: { si: "ගැඹුරු පරිවර්තනය, බලය, අතහැරීම සහ නැවත ගොඩනැගීම.", en: "Deep transformation, power, release and rebuilding.", guidanceSi: "පාලනය කිරීම වෙනුවට අවශ්‍ය අවසානයක් පිළිගෙන අලුත් රටාවක් ගොඩනගන්න.", guidanceEn: "Allow necessary endings to make room for a more honest pattern.", dashaSi: "ප්ලූටෝ ගැඹුරු පරිවර්තනය, බල සම්බන්ධතා සහ අතහැරීමට සිදුවන පැරණි රටා පිළිබඳ සංකේතයකි.", dashaEn: "Pluto can be read as a symbol of deep transformation, power dynamics and releasing old patterns." },
+  Rahu: { si: "ආශාව, අලුත් අත්දැකීම්, අධික කැමැත්ත සහ අසාමාන්‍ය මාර්ග.", en: "Desire, unfamiliar experience, appetite and unconventional paths.", guidanceSi: "අලුත් දේ සොයන විට අධිකත්වය සහ නොසන්සුන් ආශාව හඳුනාගන්න.", guidanceEn: "Notice excess and restless craving while exploring unfamiliar territory.", dashaSi: "රාහු දශාව විදේශ, තාක්ෂණය, අලුත් සමාජ, වේගවත් අවස්ථා සහ අධික ආශාව ඉස්මතු කළ හැක.", dashaEn: "A Rahu dasha can emphasize foreign links, technology, new social worlds, rapid opportunities and intense desire." },
+  Ketu: { si: "වෙන්වීම, අභ්‍යන්තර සෙවීම, පුරුදු දක්ෂතා සහ අතහැරීම.", en: "Detachment, inner search, familiar skills and release.", guidanceSi: "වෙන්වීම පලායාමක් නොකර, අර්ථවත් සරලත්වයක් බවට පත් කරන්න.", guidanceEn: "Turn detachment into meaningful simplicity rather than using it as an escape.", dashaSi: "කේතු දශාව අභ්‍යන්තර සෙවීම, පරණ දක්ෂතා, අතහැරීම සහ පිටත සාර්ථකත්වයට නව අර්ථයක් සොයාගැනීම ඉස්මතු කරයි.", dashaEn: "A Ketu dasha can emphasize inner search, old skills, release and finding new meaning beyond outer success." },
+};
+
+const NAKSHATRA_DETAILS = [
+  ["වේගය, ආරම්භය සහ සුවපත් කිරීම", "Speed, beginnings and healing"], ["වගකීම, නිර්මාණය සහ දැඩි කැපවීම", "Responsibility, creation and deep commitment"], ["ගිනි, වෙනස්කම සහ පැහැදිලි කිරීම", "Fire, change and clarification"], ["වර්ධනය, සෞන්දර්යය සහ ස්ථාවරත්වය", "Growth, beauty and steadiness"], ["සෙවීම, චලනය සහ නව දැනුම", "Searching, movement and new knowledge"], ["කුණාටුව, අභියෝගය සහ සත්‍යය හෙළි කිරීම", "Storm, challenge and revealing truth"], ["නැවත පැමිණීම, ආරක්ෂාව සහ පුළුල් වීම", "Return, protection and expansion"], ["පෝෂණය, සේවය සහ ආරක්ෂාව", "Nourishment, service and protection"], ["අභ්‍යන්තර සංකීර්ණත්වය, හැඟීම් සහ සුව කිරීම", "Inner complexity, feeling and healing"], ["පාරම්පරික බලය, මූලයන් සහ ගෞරවය", "Ancestral power, roots and dignity"], ["ප්‍රීතිය, කලාව සහ ආකර්ෂණය", "Joy, art and attraction"], ["වගකීම, දක්ෂතාවය සහ සේවය", "Responsibility, skill and service"], ["කාර්යය, අත්කම් සහ සවිස්තර බුද්ධිය", "Craft, work and detailed intelligence"], ["නිර්මාණශීලී ගැඹුර සහ පරිවර්තනය", "Creative depth and transformation"], ["නිදහස, වාතය සහ ස්වාධීනත්වය", "Freedom, air and independence"], ["ඉලක්ක, හවුල්කාරිත්වය සහ ජයග්‍රහණය", "Purpose, partnership and achievement"], ["විශ්වාසය, මිත්‍රත්වය සහ පක්ෂපාතීත්වය", "Trust, friendship and loyalty"], ["අභ්‍යන්තර බලය, සීමා සහ පරිවර්තනය", "Inner power, boundaries and transformation"], ["මූලය, අතහැරීම සහ සත්‍ය සෙවීම", "Roots, release and truth-seeking"], ["ආශාව, ජයග්‍රහණය සහ රස විඳීම", "Desire, victory and enjoyment"], ["නැගීම, අරමුණ සහ විශ්වාසය", "Ascent, purpose and conviction"], ["ඇසීම, ඉගෙනීම සහ සංස්කෘතික මතකය", "Listening, learning and cultural memory"], ["රිද්මය, සම්පත් සහ නිර්මාණාත්මක කණ්ඩායම්", "Rhythm, resources and creative groups"], ["සුවපත් කිරීම, විද්‍යාව සහ රහස් දැනුම", "Healing, science and hidden knowledge"], ["ආත්මීය අදහස්, පරස්පරතාව සහ දර්ශනය", "Spiritual ideas, paradox and philosophy"], ["ඉවසීම, සුවපත් කිරීම සහ අභ්‍යන්තර ස්ථාවරත්වය", "Patience, healing and inner steadiness"], ["ගමන අවසන් කිරීම, කරුණාව සහ නව ආරම්භය", "Completion, compassion and a new beginning"],
+];
 
 const state = { lang: "si", chart: null };
 const $ = (selector) => document.querySelector(selector);
@@ -294,6 +347,7 @@ function renderChart(chart) {
   renderPlanetTable(chart);
   renderSouthChart(chart);
   renderDasha(chart);
+  renderReading(chart);
   $("#results").classList.remove("is-hidden");
   $("#results").scrollIntoView({ behavior: "smooth", block: "start" });
 }
@@ -340,6 +394,73 @@ function renderDasha(chart) {
       <strong>${period.lord}${period.current ? " · NOW" : ""}</strong>
       <small>${formatRange(period.start, period.end)}</small>
     </div>`).join("");
+}
+
+function localizedDetail(detail, key = "") {
+  if (!detail) return "";
+  if (key) return state.lang === "si" ? detail[`${key}Si`] : detail[`${key}En`];
+  return state.lang === "si" ? detail.si : detail.en;
+}
+
+function renderReading(chart) {
+  const lagnaDetail = SIGN_DETAILS[chart.lagna.index];
+  const moonDetail = SIGN_DETAILS[chart.rashi.index];
+  const moon = chart.planets.find((planet) => planet.key === "Moon");
+  const dashaPlanet = PLANET_DETAILS[chart.dasha.current?.lord] || PLANET_DETAILS.Sun;
+  const nakshatraDetail = NAKSHATRA_DETAILS[chart.nakshatra.index];
+  const lagnaName = localize(chart.lagna);
+  const rashiName = localize(chart.rashi);
+  const nakshatraName = state.lang === "si" ? chart.nakshatra.si : chart.nakshatra.en;
+  const houseOne = HOUSE_DETAILS[0];
+  const currentDasha = chart.dasha.current?.lord || "—";
+
+  const overview = state.lang === "si"
+    ? `ඔබේ ලග්නය <strong>${chart.lagna.symbol} ${lagnaName}</strong> වන අතර, චන්ද්‍ර රාශිය <strong>${chart.rashi.symbol} ${rashiName}</strong> වේ. ${lagnaDetail.overviewSi} ${houseOne.si} මේ chart එක ඔබේ හැකියාවන්, පුරුදු සහ අවධානය යොමු කළ හැකි ක්ෂේත්‍ර ගැන reflection එකක් ලබාදෙයි; එය අනිවාර්යයෙන් සිදුවන අනාගතයක් ලෙස නොසලකන්න.`
+    : `Your Lagna is <strong>${chart.lagna.symbol} ${lagnaName}</strong> and your Moon sign is <strong>${chart.rashi.symbol} ${rashiName}</strong>. ${lagnaDetail.overviewEn} ${houseOne.en} Read this chart as a reflection on tendencies, habits and areas of attention — not as an unavoidable future.`;
+  $("#overviewReading").innerHTML = overview;
+
+  const themes = state.lang === "si" ? [
+    ["ලග්න බලය", `${lagnaDetail.elementSi} ${lagnaDetail.modeSi} ගුණය නිසා ${lagnaDetail.overviewSi}`],
+    ["මනසේ රටාව", `චන්ද්‍රයා ${rashiName} හි සිටින නිසා ${moonDetail.overviewSi} ${moonDetail.growthSi}`],
+    ["නැකතේ මූලික තේමාව", `${nakshatraName} නැකතේ ප්‍රධාන පණිවිඩය ${nakshatraDetail[0]} යන්නයි. Pada ${chart.nakshatra.pada} නිසා එය ඔබේ පෞද්ගලික ප්‍රකාශනයෙන් වෙනස් ආකාරයකින් පෙන්විය හැක.`],
+    ["දැනට අවධානය", `${currentDasha} දශාව ${dashaPlanet.dashaSi}`],
+  ] : [
+    ["Lagna energy", `${lagnaDetail.elementEn} ${lagnaDetail.modeEn} energy: ${lagnaDetail.overviewEn}`],
+    ["Emotional pattern", `With the Moon in ${rashiName}, ${moonDetail.overviewEn} ${moonDetail.growthEn}`],
+    ["Birth-star theme", `${nakshatraName} points toward ${nakshatraDetail[1]}. Pada ${chart.nakshatra.pada} can shape how this theme is expressed personally.`],
+    ["Current focus", `${currentDasha} dasha: ${dashaPlanet.dashaEn}`],
+  ];
+  $("#lifeThemes").innerHTML = themes.map(([title, text]) => `<div class="theme-item"><strong>${title}</strong><span>${text}</span></div>`).join("");
+
+  const nakText = state.lang === "si"
+    ? `<p><strong>${nakshatraName}</strong> නැකතේ පාරම්පරික තේමාව <strong>${nakshatraDetail[0]}</strong> වේ. මෙය උපන් මොහොතේ Moon හි පිහිටීමෙන් හඳුනාගන්නා නිසා, මනස දේවල් අත්විඳින ආකාරය සහ ප්‍රතිචාර දක්වන රටාව කියවීමට භාවිතා කරයි.</p><p>මෙහි ruling planet ලෙස ${chart.nakshatra.lord} පෙන්වයි. Pada ${chart.nakshatra.pada} අනුව මෙම තේමාව කතාබහ, වැඩ, සම්බන්ධතා හෝ අභ්‍යන්තර සෙවීමක් ලෙස ප්‍රකාශ විය හැක. ශක්තිය ලෙස ${nakshatraDetail[0]} භාවිතා කරමින්, අධික පැත්ත ලෙස නොසන්සුන්කම හෝ පරණ රටාවකට ඇලීම හඳුනාගන්න.</p>`
+    : `<p><strong>${nakshatraName}</strong> is traditionally associated with <strong>${nakshatraDetail[1]}</strong>. Because Nakshatra is derived from the Moon's position, it is used as a symbolic lens for how the mind experiences and responds.</p><p>Its ruling planet is ${chart.nakshatra.lord}. Pada ${chart.nakshatra.pada} can express this theme through communication, work, relationships or inner searching. Use the constructive side of ${nakshatraDetail[1]} while watching for restlessness or attachment to old patterns.</p>`;
+  $("#nakshatraReading").innerHTML = nakText;
+
+  $("#planetReadings").innerHTML = chart.planets.map((planet) => {
+    const base = PLANET_DETAILS[planet.key] || PLANET_DETAILS.Sun;
+    const sign = SIGN_DETAILS[planet.sign.index];
+    const house = HOUSE_DETAILS[planet.house - 1];
+    const signName = localize(planet.sign);
+    const text = state.lang === "si"
+      ? `${base.si} ${signName} රාශියේ පිහිටීමෙන් මෙම ගුණය ${sign.overviewSi} එය ${planet.house} වන භාවයේ ${house.si} ක්ෂේත්‍රය සමඟ සම්බන්ධ වේ. ප්‍රයෝජනවත් පැත්ත ${base.guidanceSi}`
+      : `${base.en} In ${signName}, this energy is colored by the sign: ${sign.overviewEn} It operates through house ${planet.house}, associated with ${house.en} A useful practice is: ${base.guidanceEn}`;
+    return `<article class="planet-reading-card"><div class="reading-card-title"><span>${planet.symbol}</span><span>${planetDisplay(planet)}</span><small>${signName} · H${planet.house}</small></div><p>${text}</p></article>`;
+  }).join("");
+
+  $("#houseReadings").innerHTML = HOUSE_DETAILS.map((house, index) => {
+    const signIndex = (chart.lagna.index + index) % 12;
+    const sign = SIGN_DATA[signIndex];
+    const occupants = chart.planets.filter((planet) => planet.house === index + 1).map(planetDisplay);
+    const occupantText = occupants.length ? (state.lang === "si" ? ` මෙහි සිටින ග්‍රහයන්: ${occupants.join(", ")}.` : ` Planets here: ${occupants.join(", ")}.`) : "";
+    const text = state.lang === "si" ? `${house.si} ${sign.si} රාශියේ රටාවෙන් එය ප්‍රකාශ වේ.${occupantText}` : `${house.en} It is expressed through ${sign.en} themes.${occupantText}`;
+    return `<article class="house-reading"><strong>H${index + 1} · ${state.lang === "si" ? sign.si : sign.en}</strong><p>${text}</p></article>`;
+  }).join("");
+
+  const dashaText = state.lang === "si"
+    ? `<p>දැනට <strong>${currentDasha} මහදශාව</strong> ක්‍රියාත්මක වේ. ${dashaPlanet.dashaSi}</p><p>මෙම කාලය තුළ ඔබට වඩාත් ප්‍රයෝජනවත් ප්‍රශ්නය වන්නේ “මම දැන් වර්ධනය කරගත යුතු ගුණය කුමක්ද?” යන්නයි. ${dashaPlanet.guidanceSi} වත්මන් කාල සීමාව ${chart.dasha.current ? formatRange(chart.dasha.current.start, chart.dasha.current.end) : "—"} ලෙස පෙන්වයි.</p>`
+    : `<p>Your current period is <strong>${currentDasha} Mahadasha</strong>. ${dashaPlanet.dashaEn}</p><p>A useful question for this period is: “What quality am I being asked to develop now?” ${dashaPlanet.guidanceEn} The current period is shown as ${chart.dasha.current ? formatRange(chart.dasha.current.start, chart.dasha.current.end) : "—"}.</p>`;
+  $("#dashaReading").innerHTML = dashaText;
 }
 
 function showMessage(message, isError = false) {

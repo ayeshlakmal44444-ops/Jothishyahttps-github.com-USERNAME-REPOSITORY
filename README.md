@@ -6,6 +6,7 @@ Open `index.html` in a modern browser or serve this folder from any static web h
 
 - Calculates a browser-only Vedic/Sidereal chart using Lahiri ayanamsa and whole-sign houses.
 - Shows Lagna, Moon sign/Rashi, Nakshatra, planetary signs/degrees, houses, a visual Rāśi chart and Vimshottari dasha timeline.
+- Adds a long-form Sinhala/English reading with life themes, Nakshatra meaning, planet-by-planet interpretations, house explanations and current dasha context.
 - Supports Sinhala/English UI switching and Sri Lankan city presets plus custom coordinates.
 - Does not send or save birth data. The Astronomy Engine library is loaded client-side from jsDelivr.
 
