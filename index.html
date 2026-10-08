@@ -96,21 +96,28 @@
             <span data-i18n="timeUnknown">උපන් වේලාව නොදනී / I don’t know the exact time</span>
           </label>
 
-          <div class="location-select-grid">
+          <label class="field">
+            <span data-i18n="countryLabel">රට / Country</span>
+            <select id="countrySelect" name="country"></select>
+          </label>
+
+          <div id="sriLankaLocationFields">
+            <div class="location-select-grid">
+              <label class="field">
+                <span data-i18n="provinceLabel">පළාත / Province</span>
+                <select id="provinceSelect" name="province"></select>
+              </label>
+              <label class="field">
+                <span data-i18n="districtLabel">දිස්ත්‍රික්කය / District</span>
+                <select id="districtSelect" name="district"></select>
+              </label>
+            </div>
+
             <label class="field">
-              <span data-i18n="provinceLabel">පළාත / Province</span>
-              <select id="provinceSelect" name="province"></select>
-            </label>
-            <label class="field">
-              <span data-i18n="districtLabel">දිස්ත්‍රික්කය / District</span>
-              <select id="districtSelect" name="district"></select>
+              <span data-i18n="placeLabel">උපන් ස්ථානය / Birth place</span>
+              <select id="birthPlace" name="birthPlace"></select>
             </label>
           </div>
-
-          <label class="field">
-            <span data-i18n="placeLabel">උපන් ස්ථානය / Birth place</span>
-            <select id="birthPlace" name="birthPlace"></select>
-          </label>
 
           <div class="map-picker">
             <div class="map-picker-head">
@@ -118,7 +125,7 @@
                 <strong data-i18n="mapTitle">Map එකෙන් උපන් ස්ථානය තෝරන්න</strong>
                 <p data-i18n="mapLead">රෝහලක් තෝරන්න, search කරන්න, නැත්නම් map එකේ exact තැන click කරන්න.</p>
               </div>
-              <span class="map-chip" data-i18n="mapChip">25 දිස්ත්‍රික්ක</span>
+              <span id="mapChip" class="map-chip" data-i18n="mapChip">25 දිස්ත්‍රික්ක</span>
             </div>
             <div class="map-search-row">
               <input id="mapSearch" type="search" placeholder="රෝහල / නගරය සොයන්න" data-i18n-placeholder="mapSearchPlaceholder" />

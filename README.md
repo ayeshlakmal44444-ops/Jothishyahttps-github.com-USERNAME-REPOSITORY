@@ -9,6 +9,7 @@ Open `index.html` in a modern browser or serve this folder from any static web h
 - Adds a long-form Sinhala/English reading with life themes, Nakshatra meaning, planet-by-planet interpretations, house explanations and current dasha context.
 - Supports Sinhala/English UI switching and Sri Lankan city presets plus custom coordinates.
 - Includes all 9 provinces and 25 districts, a directory of major hospitals, and an interactive Leaflet/OpenStreetMap picker. Search a hospital/city, select a marker, or click the map to use exact coordinates.
+- Includes a worldwide country selector. For countries outside Sri Lanka, select the country and click the world map for the exact birthplace; adjust the UTC offset when needed.
 - Does not send or save birth data. The Astronomy Engine library is loaded client-side from jsDelivr.
 
 ## Local preview

@@ -210,13 +210,34 @@ SRI_LANKA_REGIONS.forEach((province) => province.districts.forEach((district) =>
     lat: district.lat,
     lon: district.lon,
     utc: 5.5,
+    countryCode: "LK",
   });
   district.hospitals.forEach(([key, si, en, lat, lon]) => LOCATION_DIRECTORY.push({
-    key, type: "hospital", provinceKey: province.key, districtKey: district.key, si, en, lat, lon, utc: 5.5,
+    key, type: "hospital", provinceKey: province.key, districtKey: district.key, si, en, lat, lon, utc: 5.5, countryCode: "LK",
   }));
 }));
 
 const PLACES = Object.fromEntries(LOCATION_DIRECTORY.map((place) => [place.key, place]));
+
+// ISO 3166-1 alpha-2 codes keep the country selector independent of a
+// geocoding service. The map can be clicked for any exact point worldwide.
+const COUNTRY_CODES = "AF AL DZ AS AD AO AI AQ AG AR AM AW AU AT AZ BS BH BD BB BY BE BZ BJ BM BT BO BQ BA BW BV BR IO BN BG BF BI CV KH CM CA KY CF TD CL CN CX CC CO KM CG CD CK CR CI HR CU CW CY CZ DK DJ DM DO EC EG SV GQ ER EE SZ ET FK FO FJ FI FR GF PF TF GA GM GE DE GH GI GR GL GD GP GU GT GG GN GW GY HT HM VA HN HK HU IS IN ID IR IQ IE IM IL IT JM JP JE JO KZ KE KI KP KR KW KG LA LV LB LS LR LY LI LT LU MO MG MW MY MV ML MT MH MQ MR MU YT MX FM MD MC MN ME MS MA MZ MM NA NR NP NL NC NZ NI NE NG NU NF MK MP NO OM PK PW PS PA PG PY PE PH PN PL PT PR QA RE RO RU RW BL SH KN LC MF PM VC WS SM ST SA SN RS SC SL SG SX SK SI SB SO ZA GS SS ES LK SD SR SJ SE CH SY TW TJ TZ TH TL TG TK TO TT TN TR TM TC TV UG UA AE GB US UM UY UZ VU VE VN VG VI WF EH YE ZM ZW".split(" ");
+
+const COUNTRY_CENTERS = {
+  LK: [7.8731, 80.7718], IN: [22.5937, 78.9629], PK: [30.3753, 69.3451], BD: [23.6850, 90.3563], NP: [28.3949, 84.1240], BT: [27.5142, 90.4336],
+  MV: [3.2028, 73.2207], MY: [4.2105, 101.9758], SG: [1.3521, 103.8198], ID: [-2.5489, 118.0149], TH: [15.8700, 100.9925], MM: [21.9162, 95.9560],
+  CN: [35.8617, 104.1954], JP: [36.2048, 138.2529], KR: [35.9078, 127.7669], PH: [12.8797, 121.7740], VN: [14.0583, 108.2772], KH: [12.5657, 104.9910],
+  AE: [23.4241, 53.8478], SA: [23.8859, 45.0792], QA: [25.3548, 51.1839], OM: [21.4735, 55.9754], IL: [31.0461, 34.8516], TR: [38.9637, 35.2433],
+  GB: [55.3781, -3.4360], IE: [53.1424, -7.6921], FR: [46.2276, 2.2137], DE: [51.1657, 10.4515], IT: [41.8719, 12.5674], ES: [40.4637, -3.7492],
+  PT: [39.3999, -8.2245], NL: [52.1326, 5.2913], BE: [50.5039, 4.4699], CH: [46.8182, 8.2275], AT: [47.5162, 14.5501], SE: [60.1282, 18.6435],
+  NO: [60.4720, 8.4689], DK: [56.2639, 9.5018], FI: [61.9241, 25.7482], IS: [64.9631, -19.0208], PL: [51.9194, 19.1451], UA: [48.3794, 31.1656],
+  RU: [61.5240, 105.3188], GR: [39.0742, 21.8243], RO: [45.9432, 24.9668], BG: [42.7339, 25.4858], CZ: [49.8175, 15.4730], HU: [47.1625, 19.5033],
+  US: [37.0902, -95.7129], CA: [56.1304, -106.3468], MX: [23.6345, -102.5528], BR: [-14.2350, -51.9253], AR: [-38.4161, -63.6167], CL: [-35.6751, -71.5430],
+  PE: [-9.1900, -75.0152], CO: [4.5709, -74.2973], EC: [-1.8312, -78.1834], UY: [-32.5228, -55.7658], BO: [-16.2902, -63.5887], PY: [-23.4425, -58.4438],
+  AU: [-25.2744, 133.7751], NZ: [-40.9006, 174.8860], FJ: [-17.7134, 178.0650], PG: [-6.3150, 143.9555],
+  ZA: [-30.5595, 22.9375], NG: [9.0820, 8.6753], KE: [-0.0236, 37.9062], GH: [7.9465, -1.0232], ET: [9.1450, 40.4897], EG: [26.8206, 30.8025],
+  MA: [31.7917, -7.0926], DZ: [28.0339, 1.6596], TN: [33.8869, 9.5375], TZ: [-6.3690, 34.8888], UG: [1.3733, 32.2903], RW: [-1.9403, 29.8739],
+};
 
 const TRANSLATIONS = {
   si: {
@@ -226,7 +247,7 @@ const TRANSLATIONS = {
     heroButton: "ජන්ම පත්‍රය ගණනය කරන්න <span>↗</span>", privateNote: "දත්ත save නොවේ", siderealNote: "Lahiri Sidereal",
     calcEyebrow: "01 / ගණනය", calcTitle: "ඔබේ උපන් තොරතුරු", calcLead: "නිවැරදි වේලාව සහ ස්ථානය භාවිතා කළ විට Lagna සහ houses වඩාත් නිවැරදි වේ.",
     dateLabel: "උපන් දිනය / Birth date", timeLabel: "උපන් වේලාව / Birth time", timeUnknown: "උපන් වේලාව නොදනී / I don’t know the exact time",
-    provinceLabel: "පළාත / Province", districtLabel: "දිස්ත්‍රික්කය / District", placeLabel: "උපන් ස්ථානය / Birth place", mapTitle: "Map එකෙන් උපන් ස්ථානය තෝරන්න", mapLead: "රෝහලක් තෝරන්න, search කරන්න, නැත්නම් map එකේ exact තැන click කරන්න.", mapChip: "දිස්ත්‍රික්ක 25", mapSearchPlaceholder: "රෝහල / නගරය සොයන්න", mapSearchButton: "සොයන්න", mapNote: "Map marker එකක් තෝරන්න හෝ map එක click කරලා coordinates ගන්න. Birth data server එකට යවන්නේ නැහැ.", latitudeLabel: "Latitude", longitudeLabel: "Longitude", utcLabel: "UTC offset",
+    countryLabel: "රට / Country", provinceLabel: "පළාත / Province", districtLabel: "දිස්ත්‍රික්කය / District", placeLabel: "උපන් ස්ථානය / Birth place", mapTitle: "Map එකෙන් උපන් ස්ථානය තෝරන්න", mapLead: "රෝහලක් තෝරන්න, search කරන්න, නැත්නම් map එකේ exact තැන click කරන්න.", mapChip: "දිස්ත්‍රික්ක 25", mapSearchPlaceholder: "රෝහල / නගරය සොයන්න", mapSearchButton: "සොයන්න", mapNote: "Map marker එකක් තෝරන්න හෝ map එක click කරලා coordinates ගන්න. Birth data server එකට යවන්නේ නැහැ.", latitudeLabel: "Latitude", longitudeLabel: "Longitude", utcLabel: "UTC offset",
     calculateButton: "ගණනය කරන්න", resetButton: "ආපසු හිස් කරන්න", resultEyebrow: "02 / ඔබේ ප්‍රතිඵල",
     engineWarning: "Astronomy Engine library එක load නොවුණා. Internet connection එක පරීක්ෂා කර නැවත උත්සාහ කරන්න.",
     lagnaLabel: "Lagna / ලග්නය", rashiLabel: "Rashi / රාශිය", nakshatraLabel: "Nakshatra / නැකත", dashaLabel: "Current Mahadasha",
@@ -250,7 +271,7 @@ const TRANSLATIONS = {
     heroLead: "Enter your birth date, time and place. Your Lagna, Rashi, Nakshatra and planetary positions are calculated in your browser using the Vedic/Sidereal method.",
     heroButton: "Calculate birth chart <span>↗</span>", privateNote: "Data is not saved", siderealNote: "Lahiri Sidereal",
     calcEyebrow: "01 / CALCULATE", calcTitle: "Your birth details", calcLead: "An exact time and place make the Lagna and houses more precise.",
-    dateLabel: "Birth date", timeLabel: "Birth time", timeUnknown: "I don’t know the exact time", provinceLabel: "Province", districtLabel: "District", placeLabel: "Birth place", mapTitle: "Choose your birth place on the map", mapLead: "Choose a hospital, search the directory, or click the exact point on the map.", mapChip: "25 districts", mapSearchPlaceholder: "Search hospital or city", mapSearchButton: "Search", mapNote: "Choose a marker or click the map for exact coordinates. Birth data is not sent to a server.", latitudeLabel: "Latitude", longitudeLabel: "Longitude", utcLabel: "UTC offset",
+    dateLabel: "Birth date", timeLabel: "Birth time", timeUnknown: "I don’t know the exact time", countryLabel: "Country", provinceLabel: "Province", districtLabel: "District", placeLabel: "Birth place", mapTitle: "Choose your birth place on the map", mapLead: "Choose a hospital, search the directory, or click the exact point on the map.", mapChip: "25 districts", mapSearchPlaceholder: "Search hospital or city", mapSearchButton: "Search", mapNote: "Choose a marker or click the map for exact coordinates. Birth data is not sent to a server.", latitudeLabel: "Latitude", longitudeLabel: "Longitude", utcLabel: "UTC offset",
     calculateButton: "Calculate", resetButton: "Clear form", resultEyebrow: "02 / YOUR RESULTS", engineWarning: "The Astronomy Engine library could not load. Check your internet connection and try again.",
     lagnaLabel: "Lagna / Ascendant", rashiLabel: "Rashi / Moon sign", nakshatraLabel: "Nakshatra / Birth star", dashaLabel: "Current Mahadasha",
     chartTitle: "Birth chart", chartCaption: "Whole-sign houses", chartLegend: "Planets are shown in their sidereal signs.", planetTitle: "Planetary positions", planetHead: "Planet", signHead: "Sign", degreeHead: "Degree", houseHead: "House",
@@ -310,7 +331,7 @@ const NAKSHATRA_DETAILS = [
   ["වේගය, ආරම්භය සහ සුවපත් කිරීම", "Speed, beginnings and healing"], ["වගකීම, නිර්මාණය සහ දැඩි කැපවීම", "Responsibility, creation and deep commitment"], ["ගිනි, වෙනස්කම සහ පැහැදිලි කිරීම", "Fire, change and clarification"], ["වර්ධනය, සෞන්දර්යය සහ ස්ථාවරත්වය", "Growth, beauty and steadiness"], ["සෙවීම, චලනය සහ නව දැනුම", "Searching, movement and new knowledge"], ["කුණාටුව, අභියෝගය සහ සත්‍යය හෙළි කිරීම", "Storm, challenge and revealing truth"], ["නැවත පැමිණීම, ආරක්ෂාව සහ පුළුල් වීම", "Return, protection and expansion"], ["පෝෂණය, සේවය සහ ආරක්ෂාව", "Nourishment, service and protection"], ["අභ්‍යන්තර සංකීර්ණත්වය, හැඟීම් සහ සුව කිරීම", "Inner complexity, feeling and healing"], ["පාරම්පරික බලය, මූලයන් සහ ගෞරවය", "Ancestral power, roots and dignity"], ["ප්‍රීතිය, කලාව සහ ආකර්ෂණය", "Joy, art and attraction"], ["වගකීම, දක්ෂතාවය සහ සේවය", "Responsibility, skill and service"], ["කාර්යය, අත්කම් සහ සවිස්තර බුද්ධිය", "Craft, work and detailed intelligence"], ["නිර්මාණශීලී ගැඹුර සහ පරිවර්තනය", "Creative depth and transformation"], ["නිදහස, වාතය සහ ස්වාධීනත්වය", "Freedom, air and independence"], ["ඉලක්ක, හවුල්කාරිත්වය සහ ජයග්‍රහණය", "Purpose, partnership and achievement"], ["විශ්වාසය, මිත්‍රත්වය සහ පක්ෂපාතීත්වය", "Trust, friendship and loyalty"], ["අභ්‍යන්තර බලය, සීමා සහ පරිවර්තනය", "Inner power, boundaries and transformation"], ["මූලය, අතහැරීම සහ සත්‍ය සෙවීම", "Roots, release and truth-seeking"], ["ආශාව, ජයග්‍රහණය සහ රස විඳීම", "Desire, victory and enjoyment"], ["නැගීම, අරමුණ සහ විශ්වාසය", "Ascent, purpose and conviction"], ["ඇසීම, ඉගෙනීම සහ සංස්කෘතික මතකය", "Listening, learning and cultural memory"], ["රිද්මය, සම්පත් සහ නිර්මාණාත්මක කණ්ඩායම්", "Rhythm, resources and creative groups"], ["සුවපත් කිරීම, විද්‍යාව සහ රහස් දැනුම", "Healing, science and hidden knowledge"], ["ආත්මීය අදහස්, පරස්පරතාව සහ දර්ශනය", "Spiritual ideas, paradox and philosophy"], ["ඉවසීම, සුවපත් කිරීම සහ අභ්‍යන්තර ස්ථාවරත්වය", "Patience, healing and inner steadiness"], ["ගමන අවසන් කිරීම, කරුණාව සහ නව ආරම්භය", "Completion, compassion and a new beginning"],
 ];
 
-const state = { lang: "si", chart: null, map: null, mapLayer: null, mapPlace: null, mapReady: false };
+const state = { lang: "si", chart: null, map: null, mapLayer: null, mapPlace: null, mapReady: false, countryCode: "LK" };
 const $ = (selector) => document.querySelector(selector);
 const $$ = (selector) => [...document.querySelectorAll(selector)];
 
@@ -338,7 +359,11 @@ function applyLanguage() {
     if (strings[key] !== undefined) node.placeholder = strings[key];
   });
   document.documentElement.lang = state.lang === "si" ? "si" : "en";
-  if (state.mapReady) updateLocationSelects();
+  if (state.mapReady) {
+    updateCountryOptions();
+    updateLocationSelects();
+    updateCountryMode();
+  }
   if (state.chart) renderChart(state.chart);
 }
 
@@ -427,6 +452,56 @@ function dateFromLocal(dateText, timeText, utcOffset) {
   return new Date(Date.UTC(year, month - 1, day, hours, minutes) - offsetMinutes * 60000);
 }
 
+function currentCountryCode() {
+  return $("#countrySelect")?.value || state.countryCode || "LK";
+}
+
+function countryName(code) {
+  try {
+    return new Intl.DisplayNames([state.lang === "si" ? "si-LK" : "en"], { type: "region" }).of(code) || code;
+  } catch (error) {
+    return code;
+  }
+}
+
+function updateCountryOptions() {
+  const select = $("#countrySelect");
+  if (!select) return;
+  const previous = select.value || state.countryCode || "LK";
+  const codes = [...COUNTRY_CODES].sort((a, b) => countryName(a).localeCompare(countryName(b), state.lang === "si" ? "si" : "en"));
+  select.innerHTML = codes.map((code) => `<option value="${code}">${countryName(code)} / ${code}</option>`).join("");
+  select.value = codes.includes(previous) ? previous : "LK";
+  state.countryCode = select.value;
+}
+
+function updateCountryMode() {
+  const code = currentCountryCode();
+  const sriLanka = code === "LK";
+  const fields = $("#sriLankaLocationFields");
+  const chip = $("#mapChip");
+  if (fields) fields.classList.toggle("is-hidden", !sriLanka);
+  if (chip) chip.textContent = sriLanka ? (state.lang === "si" ? "දිස්ත්‍රික්ක 25" : "25 districts") : (state.lang === "si" ? "ලෝක map එක" : "World map");
+
+  if (sriLanka) {
+    const currentPlace = $("#birthPlace")?.value;
+    if (currentPlace === "custom" || !PLACES[currentPlace]) chooseDirectoryPlace("colombo");
+    return;
+  }
+
+  const center = COUNTRY_CENTERS[code] || [20, 0];
+  if (!state.mapPlace || state.mapPlace.countryCode !== code) {
+    state.mapPlace = { key: "custom", si: `${countryName(code)} map point`, en: `${countryName(code)} map point`, lat: center[0], lon: center[1], utc: 0, countryCode: code };
+    $("#birthPlace").value = "custom";
+    $("#latitude").value = center[0].toFixed(5);
+    $("#longitude").value = center[1].toFixed(5);
+    $("#utcOffset").value = "0";
+    $("#customLocation").classList.remove("is-hidden");
+    if (state.mapReady) state.map.setView(center, 4, { animate: true });
+  }
+  setMapMessage(`${countryName(code)} තෝරා ඇත. Map එක click කර exact city/place එක තෝරන්න.`, `${countryName(code)} selected. Click the map to choose the exact city or place.`);
+  renderMapMarkers();
+}
+
 function provinceByKey(key) {
   return SRI_LANKA_REGIONS.find((province) => province.key === key) || SRI_LANKA_REGIONS[0];
 }
@@ -490,21 +565,23 @@ function chooseDirectoryPlace(key) {
 }
 
 function chooseMapPoint(lat, lon) {
-  const point = { key: "custom", si: "Map point", en: "Map point", lat, lon, utc: 5.5 };
+  const code = currentCountryCode();
+  const name = countryName(code);
+  const point = { key: "custom", si: `${name} map point`, en: `${name} map point`, lat, lon, utc: code === "LK" ? 5.5 : 0, countryCode: code };
   state.mapPlace = point;
   $("#birthPlace").value = "custom";
   $("#latitude").value = lat.toFixed(5);
   $("#longitude").value = lon.toFixed(5);
-  $("#utcOffset").value = "5.5";
+  $("#utcOffset").value = code === "LK" ? "5.5" : "0";
   $("#customLocation").classList.remove("is-hidden");
-  setMapMessage(`Map point තෝරා ඇත: ${lat.toFixed(5)}, ${lon.toFixed(5)}.`, `Map point selected: ${lat.toFixed(5)}, ${lon.toFixed(5)}.`);
+  setMapMessage(`${name} map point තෝරා ඇත: ${lat.toFixed(5)}, ${lon.toFixed(5)}.`, `${name} map point selected: ${lat.toFixed(5)}, ${lon.toFixed(5)}.`);
   renderMapMarkers();
 }
 
 function renderMapMarkers() {
   if (!state.mapReady || !state.mapLayer) return;
   state.mapLayer.clearLayers();
-  LOCATION_DIRECTORY.forEach((place) => {
+  if (currentCountryCode() === "LK") LOCATION_DIRECTORY.forEach((place) => {
     const marker = L.circleMarker([place.lat, place.lon], {
       radius: place.type === "district" ? 7 : 5,
       color: place.type === "district" ? "#7f3d64" : "#c18a49",
@@ -526,6 +603,10 @@ function renderMapMarkers() {
 function searchMapDirectory() {
   const query = $("#mapSearch").value.trim().toLocaleLowerCase();
   if (!query) return;
+  if (currentCountryCode() !== "LK") {
+    setMapMessage("වෙනත් රටවල් සඳහා map එක click කර exact city/place එක තෝරන්න.", "For other countries, click the map to choose the exact city or place.");
+    return;
+  }
   const match = LOCATION_DIRECTORY.find((place) => `${place.si} ${place.en}`.toLocaleLowerCase().includes(query));
   if (!match) {
     setMapMessage("රෝහල/නගරය directory එකේ හමු නොවුණා. Map එක click කර exact තැන තෝරන්න.", "No directory match. Click the map to choose the exact place.");
@@ -535,6 +616,7 @@ function searchMapDirectory() {
 }
 
 function initLocationPicker() {
+  updateCountryOptions();
   updateLocationSelects();
   if (!window.L || !$("#birthMap")) return;
   state.map = L.map("birthMap", { scrollWheelZoom: false }).setView([7.8731, 80.7718], 7.4);
@@ -547,6 +629,7 @@ function initLocationPicker() {
   renderMapMarkers();
   state.map.on("click", (event) => chooseMapPoint(event.latlng.lat, event.latlng.lng));
   setTimeout(() => state.map.invalidateSize(), 100);
+  updateCountryMode();
 }
 
 function selectedLocation() {
@@ -555,12 +638,12 @@ function selectedLocation() {
   const mapPoint = state.mapPlace && state.mapPlace.key === "custom" ? state.mapPlace : null;
   return {
     key: "custom",
-    si: "Map point",
-    en: "Map point",
+    si: mapPoint?.si || `${countryName(currentCountryCode())} map point`,
+    en: mapPoint?.en || `${countryName(currentCountryCode())} map point`,
     lat: Number($("#latitude").value),
     lon: Number($("#longitude").value),
     utc: Number($("#utcOffset").value),
-    ...(mapPoint || {}),
+    countryCode: currentCountryCode(),
   };
 }
 
@@ -779,7 +862,11 @@ function resetForm() {
   $("#birthTime").disabled = false;
   $("#customLocation").classList.add("is-hidden");
   state.mapPlace = null;
+  state.countryCode = "LK";
+  $("#countrySelect").value = "LK";
+  updateCountryOptions();
   updateLocationSelects();
+  updateCountryMode();
   $("#results").classList.add("is-hidden");
   showMessage("");
   state.chart = null;
@@ -790,12 +877,19 @@ $("#languageToggle").addEventListener("click", () => {
   applyLanguage();
 });
 
+$("#countrySelect").addEventListener("change", (event) => {
+  state.countryCode = event.target.value;
+  updateCountryMode();
+});
+
 $("#provinceSelect").addEventListener("change", (event) => {
+  state.mapPlace = null;
   $("#districtSelect").value = provinceByKey(event.target.value).districts[0].key;
   updateLocationSelects();
 });
 
 $("#districtSelect").addEventListener("change", () => {
+  state.mapPlace = null;
   updateLocationSelects();
   const district = districtByKey(provinceByKey($("#provinceSelect").value), $("#districtSelect").value);
   chooseDirectoryPlace(district.key);
@@ -821,6 +915,7 @@ $("#mapSearch").addEventListener("keydown", (event) => {
 
 $("#latitude").addEventListener("input", () => { state.mapPlace = null; });
 $("#longitude").addEventListener("input", () => { state.mapPlace = null; });
+$("#utcOffset").addEventListener("input", () => { state.mapPlace = null; });
 
 $("#timeUnknown").addEventListener("change", (event) => {
   $("#birthTime").disabled = event.target.checked;
