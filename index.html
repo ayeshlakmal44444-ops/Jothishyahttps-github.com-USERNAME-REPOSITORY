@@ -237,7 +237,22 @@
               </div>
               <span class="panel-caption" data-i18n="chartCaption">Whole-sign houses</span>
             </div>
-            <div id="chartGrid" class="south-chart" aria-label="Birth chart visualization"></div>
+            <div class="chart-style-switch" role="tablist" aria-label="Chart presentation style">
+              <button class="chart-style-button is-active" type="button" data-chart-style="south" data-i18n="southIndianStyle">දකුණු ඉන්දීය</button>
+              <button class="chart-style-button" type="button" data-chart-style="sri" data-i18n="sriLankaStyle">ශ්‍රී ලංකා</button>
+              <button class="chart-style-button" type="button" data-chart-style="bhrigu" data-i18n="bhriguStyle">භෘගු ක්‍රමය</button>
+            </div>
+            <p id="chartStyleNote" class="chart-style-note"></p>
+            <div class="dual-chart-grid">
+              <section class="mini-chart-block">
+                <div class="mini-chart-heading"><strong data-i18n="d1Title">D1 / රාශි</strong><span>RĀŚI</span></div>
+                <div id="chartGrid" class="south-chart" aria-label="D1 birth chart visualization"></div>
+              </section>
+              <section class="mini-chart-block">
+                <div class="mini-chart-heading"><strong data-i18n="d9Title">D9 / නවාංශ</strong><span>NAVĀṂŚA</span></div>
+                <div id="navamsaGrid" class="south-chart navamsa-chart" aria-label="D9 Navamsa chart visualization"></div>
+              </section>
+            </div>
             <p class="chart-legend"><span class="legend-dot"></span><span data-i18n="chartLegend">ග්‍රහයන් ඔවුන්ගේ sidereal රාශි තුළ පෙන්වා ඇත.</span></p>
           </article>
 
@@ -245,19 +260,80 @@
             <div class="panel-heading">
               <div>
                 <p class="eyebrow">GRAHAS</p>
-                <h3 data-i18n="planetTitle">ග්‍රහ පිහිටීම්</h3>
+                <h3 data-i18n="expandedTableTitle">ග්‍රහ පිහිටීම් — D1</h3>
               </div>
             </div>
             <div class="table-wrap">
-              <table>
+              <table class="placement-table">
                 <thead>
-                  <tr><th data-i18n="planetHead">ග්‍රහයා</th><th data-i18n="signHead">රාශිය</th><th data-i18n="degreeHead">අංශක</th><th data-i18n="houseHead">භාවය</th></tr>
+                  <tr><th data-i18n="planetHead">ග්‍රහයා</th><th data-i18n="signHead">රාශිය</th><th data-i18n="sphutaHead">ස්පුට</th><th data-i18n="rashiDegreeHead">රාශි අංශක</th><th data-i18n="houseHead">භාවය</th><th data-i18n="nakshatraHead">නැකත</th><th data-i18n="padaHead">පාදය</th><th data-i18n="rashiLordHead">රාශි අධිපති</th><th data-i18n="nakshatraLordHead">නැකත් අධිපති</th><th data-i18n="bhavaLordHead">භාවාධිපති</th></tr>
                 </thead>
                 <tbody id="planetTable"></tbody>
               </table>
             </div>
           </article>
         </div>
+
+        <article class="panel d9-table-panel">
+          <div class="panel-heading">
+            <div>
+              <p class="eyebrow">NAVĀṂŚA</p>
+              <h3 data-i18n="navamsaTableTitle">D9 / නවාංශ ග්‍රහ පිහිටීම්</h3>
+            </div>
+            <span class="panel-caption" data-i18n="navamsaCaption">Dharma and relationship varga</span>
+          </div>
+          <div class="table-wrap">
+            <table class="placement-table">
+              <thead>
+                <tr><th data-i18n="planetHead">ග්‍රහයා</th><th data-i18n="signHead">නවාංශ රාශිය</th><th data-i18n="sphutaHead">ස්පුට</th><th data-i18n="rashiDegreeHead">නවාංශ අංශක</th><th data-i18n="houseHead">භාවය</th><th data-i18n="nakshatraHead">නැකත</th><th data-i18n="padaHead">පාදය</th><th data-i18n="rashiLordHead">රාශි අධිපති</th><th data-i18n="nakshatraLordHead">නැකත් අධිපති</th><th data-i18n="bhavaLordHead">භාවාධිපති</th></tr>
+              </thead>
+              <tbody id="navamsaTable"></tbody>
+            </table>
+          </div>
+        </article>
+
+        <div class="advanced-result-grid">
+          <article class="panel">
+            <div class="panel-heading">
+              <div>
+                <p class="eyebrow">SPECIAL LAGNAS</p>
+                <h3 data-i18n="specialLagnaTitle">විශේෂ ලග්න</h3>
+              </div>
+              <span class="panel-caption" data-i18n="specialLagnaCaption">Birth-time based indicators</span>
+            </div>
+            <div class="table-wrap">
+              <table class="compact-table">
+                <thead><tr><th data-i18n="lagnaTypeHead">වර්ගය</th><th data-i18n="signHead">රාශිය</th><th data-i18n="degreeHead">අංශක</th><th data-i18n="nakshatraHead">නැකත</th><th data-i18n="padaHead">පාදය</th></tr></thead>
+                <tbody id="specialLagnaTable"></tbody>
+              </table>
+            </div>
+            <p class="table-note" data-i18n="specialLagnaNote">Hora/Ghatika/Bhava Lagna මෙහි browser-only sunrise convention එකක් මත පදනම් වේ.</p>
+          </article>
+          <article class="panel">
+            <div class="panel-heading">
+              <div>
+                <p class="eyebrow">VARGA</p>
+                <h3 data-i18n="vargaTitle">වර්ග සාරාංශය</h3>
+              </div>
+            </div>
+            <div id="vargaSummary" class="varga-summary"></div>
+          </article>
+        </div>
+
+        <article class="panel sudarshana-panel">
+          <div class="panel-heading">
+            <div>
+              <p class="eyebrow">SUDARŚANA</p>
+              <h3 data-i18n="sudarshanaTitle">සුදර්ශන කේන්ද්‍රය</h3>
+            </div>
+            <span class="panel-caption" data-i18n="sudarshanaCaption">Lagna · Moon · Sun reference charts</span>
+          </div>
+          <div class="sudarshana-grid">
+            <section class="mini-chart-block"><div class="mini-chart-heading"><strong data-i18n="sudarshanaLagna">ලග්න පදනම</strong><span>LAGNA</span></div><div id="sudarshanaLagna" class="south-chart" aria-label="Sudarshana Lagna chart"></div></section>
+            <section class="mini-chart-block"><div class="mini-chart-heading"><strong data-i18n="sudarshanaMoon">චන්ද්‍ර පදනම</strong><span>MOON</span></div><div id="sudarshanaMoon" class="south-chart" aria-label="Sudarshana Moon chart"></div></section>
+            <section class="mini-chart-block"><div class="mini-chart-heading"><strong data-i18n="sudarshanaSun">රවි පදනම</strong><span>SUN</span></div><div id="sudarshanaSun" class="south-chart" aria-label="Sudarshana Sun chart"></div></section>
+          </div>
+        </article>
 
         <article class="panel dasha-panel">
           <div class="panel-heading">

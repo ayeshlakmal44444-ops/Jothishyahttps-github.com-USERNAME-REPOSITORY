@@ -22,6 +22,9 @@ const SIGN_DATA = [
   { si: "මීන", en: "Pisces", symbol: "♓" },
 ];
 
+const SIGN_RULERS = ["Mars", "Venus", "Mercury", "Moon", "Sun", "Mercury", "Venus", "Mars", "Jupiter", "Saturn", "Saturn", "Jupiter"];
+const SIGN_MODES = ["movable", "fixed", "dual", "movable", "fixed", "dual", "movable", "fixed", "dual", "movable", "fixed", "dual"];
+
 const NAKSHATRAS = [
   ["අශ්විනී", "Ashwini", "Ketu"], ["භරණී", "Bharani", "Venus"], ["කෘත්තිකා", "Krittika", "Sun"],
   ["රෝහිණී", "Rohini", "Moon"], ["මෘගශීර්ෂ", "Mrigashira", "Mars"], ["ආර්ද්‍රා", "Ardra", "Rahu"],
@@ -251,12 +254,12 @@ const TRANSLATIONS = {
     calculateButton: "ගණනය කරන්න", resetButton: "ආපසු හිස් කරන්න", resultEyebrow: "02 / ඔබේ ප්‍රතිඵල",
     engineWarning: "Astronomy Engine library එක load නොවුණා. Internet connection එක පරීක්ෂා කර නැවත උත්සාහ කරන්න.",
     lagnaLabel: "Lagna / ලග්නය", rashiLabel: "Rashi / රාශිය", nakshatraLabel: "Nakshatra / නැකත", dashaLabel: "Current Mahadasha",
-    chartTitle: "ජන්ම කේන්දරය", chartCaption: "Whole-sign houses", chartLegend: "ග්‍රහයන් ඔවුන්ගේ sidereal රාශි තුළ පෙන්වා ඇත.",
-    planetTitle: "ග්‍රහ පිහිටීම්", planetHead: "ග්‍රහයා", signHead: "රාශිය", degreeHead: "අංශක", houseHead: "භාවය",
+    chartTitle: "ජන්ම කේන්දරය", chartCaption: "Whole-sign houses", chartLegend: "ග්‍රහයන් ඔවුන්ගේ sidereal රාශි තුළ පෙන්වා ඇත.", southIndianStyle: "දකුණු ඉන්දීය", sriLankaStyle: "ශ්‍රී ලංකා", bhriguStyle: "භෘගු ක්‍රමය", d1Title: "D1 / රාශි", d9Title: "D9 / නවාංශ", expandedTableTitle: "ග්‍රහ පිහිටීම් — D1", navamsaTableTitle: "D9 / නවාංශ ග්‍රහ පිහිටීම්", navamsaCaption: "ධර්ම හා සම්බන්ධතා වර්ගය", specialLagnaTitle: "විශේෂ ලග්න", specialLagnaCaption: "උපන් වේලාව මත පදනම් වූ ලග්න", vargaTitle: "වර්ග සාරාංශය",
+    planetTitle: "ග්‍රහ පිහිටීම්", planetHead: "ග්‍රහයා", signHead: "රාශිය", sphutaHead: "ස්පුට", rashiDegreeHead: "රාශි අංශක", degreeHead: "අංශක", houseHead: "භාවය", nakshatraHead: "නැකත", padaHead: "පාදය", rashiLordHead: "රාශි අධිපති", nakshatraLordHead: "නැකත් අධිපති", bhavaLordHead: "භාවාධිපති", lagnaTypeHead: "වර්ගය", specialLagnaNote: "Hora/Ghatika/Bhava Lagna මෙහි browser-only sunrise convention එකක් මත පදනම් වේ.", sudarshanaTitle: "සුදර්ශන කේන්ද්‍රය", sudarshanaCaption: "ලග්න · චන්ද්‍ර · රවි පදනම් charts", sudarshanaLagna: "ලග්න පදනම", sudarshanaMoon: "චන්ද්‍ර පදනම", sudarshanaSun: "රවි පදනම",
     dashaTitle: "Vimshottari දශා", dashaCaption: "Birth-star based timing", disclaimerTitle: "සටහන",
     disclaimerText: "මෙය පාරම්පරික/සංස්කෘතික ජෝතිෂ්‍ය ක්‍රම මත පදනම් වූ educational calculation එකකි. වෛද්‍ය, නීතිමය හෝ මූල්‍ය තීරණ සඳහා මෙය එකම පදනම කර නොගන්න.",
     methodEyebrow: "03 / ක්‍රමවේදය", methodTitle: "සංඛ්‍යා ගණනය වන්නේ කෙසේද?", methodOneTitle: "අහසේ පිහිටීම", methodOneText: "උපන් මොහොතේ Sun, Moon සහ planets හි apparent ecliptic positions ගණනය කරයි.",
-    methodTwoTitle: "Sidereal correction", methodTwoText: "Lahiri ayanamsa භාවිතයෙන් tropical positions sidereal රාශිවලට පරිවර්තනය කරයි.", methodThreeTitle: "ඔබේ chart එක", methodThreeText: "Lagna, houses, Nakshatra සහ Vimshottari දශා එකම browser session එක තුළ පෙන්වයි.",
+    methodTwoTitle: "Sidereal correction", methodTwoText: "Lahiri ayanamsa භාවිතයෙන් tropical positions sidereal රාශිවලට පරිවර්තනය කරයි.", methodThreeTitle: "ඔබේ chart එක", methodThreeText: "D1/Rāśi, D9/Navāṃśa, Sudarshana, Hora/Ghatika/Bhava Lagna සහ සම්පූර්ණ graha tables එකම browser session එක තුළ පෙන්වයි.",
     faqEyebrow: "04 / FAQ", faqTitle: "දැනගත යුතු දේ", faqOneQ: "මගේ birth data save වෙනවාද?", faqOneA: "නැහැ. මෙම version එකේ calculation browser එක තුළම සිදුවන අතර server/database එකකට යවන්නේ නැහැ.",
     faqTwoQ: "වේලාව නොදන්නේ නම්?", faqTwoA: "Moon sign සහ planetary signs පෙන්විය හැකි නමුත් Lagna සහ houses provisional ලෙස සලකන්න. හොඳම ප්‍රතිඵලයට birth certificate එකේ වේලාව භාවිතා කරන්න.",
     faqThreeQ: "මෙය scientific prediction එකක්ද?", faqThreeA: "නැහැ. මෙය Vedic astrology හි සම්ප්‍රදායික ගණනයක් පෙන්වන educational tool එකකි; future certainty එකක් ලෙස භාවිතා නොකරන්න.",
@@ -274,9 +277,10 @@ const TRANSLATIONS = {
     dateLabel: "Birth date", timeLabel: "Birth time", timeUnknown: "I don’t know the exact time", countryLabel: "Country", provinceLabel: "Province", districtLabel: "District", placeLabel: "Birth place", mapTitle: "Choose your birth place on the map", mapLead: "Choose a hospital, search the directory, or click the exact point on the map.", mapChip: "25 districts", mapSearchPlaceholder: "Search hospital or city", mapSearchButton: "Search", mapNote: "Choose a marker or click the map for exact coordinates. Birth data is not sent to a server.", latitudeLabel: "Latitude", longitudeLabel: "Longitude", utcLabel: "UTC offset",
     calculateButton: "Calculate", resetButton: "Clear form", resultEyebrow: "02 / YOUR RESULTS", engineWarning: "The Astronomy Engine library could not load. Check your internet connection and try again.",
     lagnaLabel: "Lagna / Ascendant", rashiLabel: "Rashi / Moon sign", nakshatraLabel: "Nakshatra / Birth star", dashaLabel: "Current Mahadasha",
-    chartTitle: "Birth chart", chartCaption: "Whole-sign houses", chartLegend: "Planets are shown in their sidereal signs.", planetTitle: "Planetary positions", planetHead: "Planet", signHead: "Sign", degreeHead: "Degree", houseHead: "House",
+    chartTitle: "Birth chart", chartCaption: "Whole-sign houses", chartLegend: "Planets are shown in their sidereal signs.", southIndianStyle: "South Indian", sriLankaStyle: "Sri Lankan", bhriguStyle: "Bhrigu method", d1Title: "D1 / Rāśi", d9Title: "D9 / Navāṃśa", expandedTableTitle: "Planet placements — D1", navamsaTableTitle: "D9 / Navāṃśa placements", navamsaCaption: "Dharma and relationship varga", specialLagnaTitle: "Special lagnas", specialLagnaCaption: "Birth-time based indicators", vargaTitle: "Varga summary",
+    planetTitle: "Planetary positions", planetHead: "Planet", signHead: "Sign", sphutaHead: "Sphuta", rashiDegreeHead: "Sign degree", degreeHead: "Degree", houseHead: "House", nakshatraHead: "Nakshatra", padaHead: "Pada", rashiLordHead: "Sign lord", nakshatraLordHead: "Nakshatra lord", bhavaLordHead: "House lord", lagnaTypeHead: "Type", specialLagnaNote: "Hora, Ghatika and Bhava Lagna use a transparent browser-only sunrise convention; other schools may differ.", sudarshanaTitle: "Sudarśana Chakra", sudarshanaCaption: "Lagna · Moon · Sun reference charts", sudarshanaLagna: "Lagna reference", sudarshanaMoon: "Moon reference", sudarshanaSun: "Sun reference",
     dashaTitle: "Vimshottari dasha", dashaCaption: "Birth-star based timing", disclaimerTitle: "Note", disclaimerText: "This is an educational calculation based on traditional/cultural astrology. Do not use it as the sole basis for medical, legal or financial decisions.",
-    methodEyebrow: "03 / METHOD", methodTitle: "How is it calculated?", methodOneTitle: "Sky position", methodOneText: "The apparent ecliptic positions of the Sun, Moon and planets are calculated for the birth moment.", methodTwoTitle: "Sidereal correction", methodTwoText: "Lahiri ayanamsa converts tropical positions into sidereal signs.", methodThreeTitle: "Your chart", methodThreeText: "Lagna, houses, Nakshatra and Vimshottari dasha are shown in the same browser session.",
+    methodEyebrow: "03 / METHOD", methodTitle: "How is it calculated?", methodOneTitle: "Sky position", methodOneText: "The apparent ecliptic positions of the Sun, Moon and planets are calculated for the birth moment.", methodTwoTitle: "Sidereal correction", methodTwoText: "Lahiri ayanamsa converts tropical positions into sidereal signs.", methodThreeTitle: "Your chart", methodThreeText: "D1/Rāśi, D9/Navāṃśa, Sudarśana, Hora/Ghatika/Bhava Lagna and complete graha tables are shown in the same browser session.",
     faqEyebrow: "04 / FAQ", faqTitle: "Good to know", faqOneQ: "Is my birth data saved?", faqOneA: "No. This version calculates in your browser and does not send data to a server or database.", faqTwoQ: "What if I do not know the time?", faqTwoA: "Moon sign and planetary signs can still be shown, but treat the Lagna and houses as provisional. Use a birth certificate time when possible.", faqThreeQ: "Is this a scientific prediction?", faqThreeA: "No. It is an educational tool that presents a traditional Vedic astrology calculation; it is not a certainty about the future.", footerText: "Your birth sky, in a language you understand.",
     readingTitle: "A longer reading of your chart", readingCaption: "Traditional interpretation", themesTitle: "Main themes", nakshatraReadingTitle: "Your Nakshatra", planetReadingTitle: "Detailed planet readings", houseReadingTitle: "Life areas by house", dashaReadingTitle: "What your current dasha represents", readingFootnote: "These paragraphs are a traditional astrology reflection guide, not a certain prediction of the future.",
   },
@@ -331,7 +335,7 @@ const NAKSHATRA_DETAILS = [
   ["වේගය, ආරම්භය සහ සුවපත් කිරීම", "Speed, beginnings and healing"], ["වගකීම, නිර්මාණය සහ දැඩි කැපවීම", "Responsibility, creation and deep commitment"], ["ගිනි, වෙනස්කම සහ පැහැදිලි කිරීම", "Fire, change and clarification"], ["වර්ධනය, සෞන්දර්යය සහ ස්ථාවරත්වය", "Growth, beauty and steadiness"], ["සෙවීම, චලනය සහ නව දැනුම", "Searching, movement and new knowledge"], ["කුණාටුව, අභියෝගය සහ සත්‍යය හෙළි කිරීම", "Storm, challenge and revealing truth"], ["නැවත පැමිණීම, ආරක්ෂාව සහ පුළුල් වීම", "Return, protection and expansion"], ["පෝෂණය, සේවය සහ ආරක්ෂාව", "Nourishment, service and protection"], ["අභ්‍යන්තර සංකීර්ණත්වය, හැඟීම් සහ සුව කිරීම", "Inner complexity, feeling and healing"], ["පාරම්පරික බලය, මූලයන් සහ ගෞරවය", "Ancestral power, roots and dignity"], ["ප්‍රීතිය, කලාව සහ ආකර්ෂණය", "Joy, art and attraction"], ["වගකීම, දක්ෂතාවය සහ සේවය", "Responsibility, skill and service"], ["කාර්යය, අත්කම් සහ සවිස්තර බුද්ධිය", "Craft, work and detailed intelligence"], ["නිර්මාණශීලී ගැඹුර සහ පරිවර්තනය", "Creative depth and transformation"], ["නිදහස, වාතය සහ ස්වාධීනත්වය", "Freedom, air and independence"], ["ඉලක්ක, හවුල්කාරිත්වය සහ ජයග්‍රහණය", "Purpose, partnership and achievement"], ["විශ්වාසය, මිත්‍රත්වය සහ පක්ෂපාතීත්වය", "Trust, friendship and loyalty"], ["අභ්‍යන්තර බලය, සීමා සහ පරිවර්තනය", "Inner power, boundaries and transformation"], ["මූලය, අතහැරීම සහ සත්‍ය සෙවීම", "Roots, release and truth-seeking"], ["ආශාව, ජයග්‍රහණය සහ රස විඳීම", "Desire, victory and enjoyment"], ["නැගීම, අරමුණ සහ විශ්වාසය", "Ascent, purpose and conviction"], ["ඇසීම, ඉගෙනීම සහ සංස්කෘතික මතකය", "Listening, learning and cultural memory"], ["රිද්මය, සම්පත් සහ නිර්මාණාත්මක කණ්ඩායම්", "Rhythm, resources and creative groups"], ["සුවපත් කිරීම, විද්‍යාව සහ රහස් දැනුම", "Healing, science and hidden knowledge"], ["ආත්මීය අදහස්, පරස්පරතාව සහ දර්ශනය", "Spiritual ideas, paradox and philosophy"], ["ඉවසීම, සුවපත් කිරීම සහ අභ්‍යන්තර ස්ථාවරත්වය", "Patience, healing and inner steadiness"], ["ගමන අවසන් කිරීම, කරුණාව සහ නව ආරම්භය", "Completion, compassion and a new beginning"],
 ];
 
-const state = { lang: "si", chart: null, map: null, mapLayer: null, mapPlace: null, mapReady: false, countryCode: "LK" };
+const state = { lang: "si", chart: null, map: null, mapLayer: null, mapPlace: null, mapReady: false, countryCode: "LK", chartStyle: "south" };
 const $ = (selector) => document.querySelector(selector);
 const $$ = (selector) => [...document.querySelectorAll(selector)];
 
@@ -421,6 +425,17 @@ function signFor(longitude) {
   return { index, ...SIGN_DATA[index], degree: normalize(longitude) % 30 };
 }
 
+function navamsaFor(longitude) {
+  const normalized = normalize(longitude);
+  const rashiIndex = Math.floor(normalized / 30);
+  const rashiDegree = normalized % 30;
+  const part = Math.min(8, Math.floor(rashiDegree / (30 / 9)));
+  const start = SIGN_MODES[rashiIndex] === "movable" ? rashiIndex : SIGN_MODES[rashiIndex] === "fixed" ? rashiIndex + 8 : rashiIndex + 4;
+  const index = (start + part) % 12;
+  const degree = (rashiDegree - part * (30 / 9)) * 9;
+  return { index, ...SIGN_DATA[index], degree, longitude: normalize(index * 30 + degree), rashiIndex, part };
+}
+
 function nakshatraFor(longitude) {
   const span = 360 / 27;
   const normalized = normalize(longitude);
@@ -432,6 +447,13 @@ function nakshatraFor(longitude) {
 
 function formatDegree(degree) {
   const safe = Math.max(0, Math.min(29.9999, degree));
+  const degrees = Math.floor(safe);
+  const minutes = Math.floor((safe - degrees) * 60);
+  return `${degrees}° ${String(minutes).padStart(2, "0")}′`;
+}
+
+function formatAbsoluteDegree(longitude) {
+  const safe = normalize(longitude);
   const degrees = Math.floor(safe);
   const minutes = Math.floor((safe - degrees) * 60);
   return `${degrees}° ${String(minutes).padStart(2, "0")}′`;
@@ -450,6 +472,26 @@ function dateFromLocal(dateText, timeText, utcOffset) {
   const [hours, minutes] = timeText.split(":").map(Number);
   const offsetMinutes = Math.round(Number(utcOffset) * 60);
   return new Date(Date.UTC(year, month - 1, day, hours, minutes) - offsetMinutes * 60000);
+}
+
+function localClockHours(date, utcOffset) {
+  const localMs = date.getTime() + Number(utcOffset) * 3600000;
+  const local = new Date(localMs);
+  return local.getUTCHours() + local.getUTCMinutes() / 60 + local.getUTCSeconds() / 3600;
+}
+
+function calculateSpecialLagnas(date, location, lagnaLongitude) {
+  // A transparent sunrise convention keeps this browser-only calculator
+  // deterministic. Exact sunrise tables can differ by ephemeris and location.
+  const localHours = localClockHours(date, location.utc);
+  const hoursFromSix = (localHours - 6 + 24) % 24;
+  const makeEntry = (key, si, en, longitude, note) => ({ key, si, en, longitude: normalize(longitude), sign: signFor(longitude), nakshatra: nakshatraFor(longitude), note });
+  return [
+    makeEntry("lagna", "ලග්නය", "Lagna", lagnaLongitude, "Ascendant"),
+    makeEntry("hora", "හෝරා ලග්නය", "Hora Lagna", lagnaLongitude + hoursFromSix * 30, "Traditional 30° per hour from 06:00 local sunrise convention"),
+    makeEntry("ghatika", "ඝටිකා ලග්නය", "Ghatika Lagna", lagnaLongitude + hoursFromSix * 2.5 * 30, "Traditional 2.5 signs per hour from 06:00 local sunrise convention"),
+    makeEntry("bhava", "භාව ලග්නය", "Bhava Lagna", lagnaLongitude + hoursFromSix * 15, "Half-speed special ascendant convention"),
+  ];
 }
 
 function currentCountryCode() {
@@ -688,11 +730,28 @@ function calculateChart(input) {
   const moon = planets.find((planet) => planet.key === "Moon");
   const rashi = signFor(moon.longitude);
   const nakshatra = nakshatraFor(moon.longitude);
+  const navamsaLagna = navamsaFor(lagnaLongitude);
   planets.forEach((planet) => {
     planet.sign = signFor(planet.longitude);
     planet.house = ((planet.sign.index - lagna.index + 12) % 12) + 1;
+    planet.nakshatra = nakshatraFor(planet.longitude);
+    planet.navamsaSign = navamsaFor(planet.longitude);
+    planet.navamsaHouse = ((planet.navamsaSign.index - navamsaLagna.index + 12) % 12) + 1;
   });
-  return { date, location: input.location, lagnaLongitude, lagna, rashi, nakshatra, planets, ayanamsa, dasha: computeDasha(date, moon.longitude), unknownTime: input.unknownTime };
+  return {
+    date,
+    location: input.location,
+    lagnaLongitude,
+    lagna,
+    rashi,
+    nakshatra,
+    planets,
+    navamsa: { lagnaLongitude: navamsaLagna.longitude, lagna: navamsaLagna, planets },
+    specialLagnas: calculateSpecialLagnas(date, input.location, lagnaLongitude),
+    ayanamsa,
+    dasha: computeDasha(date, moon.longitude),
+    unknownTime: input.unknownTime,
+  };
 }
 
 function planetDisplay(planet) {
@@ -721,26 +780,79 @@ function renderChart(chart) {
     : "";
   $("#timeWarning").classList.toggle("is-hidden", !chart.unknownTime);
   renderPlanetTable(chart);
+  renderNavamsaTable(chart);
   renderSouthChart(chart);
+  renderSudarshana(chart);
+  renderSpecialLagnas(chart);
+  renderVargaSummary(chart);
   renderDasha(chart);
   renderReading(chart);
   $("#results").classList.remove("is-hidden");
   $("#results").scrollIntoView({ behavior: "smooth", block: "start" });
 }
 
-function renderPlanetTable(chart) {
-  $("#planetTable").innerHTML = chart.planets.map((planet) => `
+function planetLabelByKey(key) {
+  const info = PLANETS.find((planet) => planet.key === key) || Object.values(NODE_SYMBOLS).find((planet) => planet.key === key);
+  return info ? planetDisplay(info) : key;
+}
+
+function placementRows(chart, isNavamsa = false) {
+  const ascendant = isNavamsa ? chart.navamsa.lagna : chart.lagna;
+  const ascendantLongitude = isNavamsa ? chart.navamsa.lagnaLongitude : chart.lagnaLongitude;
+  const ascendantNakshatra = nakshatraFor(chart.lagnaLongitude);
+  const rows = [{
+    key: "Lagna", si: "ලග්නය", en: "Lagna", symbol: "↑", sign: ascendant, longitude: ascendantLongitude,
+    degree: ascendant.degree, house: 1, nakshatra: ascendantNakshatra,
+  }];
+  chart.planets.forEach((planet) => {
+    const sign = isNavamsa ? planet.navamsaSign : planet.sign;
+    rows.push({
+      ...planet,
+      sign,
+      longitude: planet.longitude,
+      degree: sign.degree,
+      house: isNavamsa ? planet.navamsaHouse : planet.house,
+      nakshatra: planet.nakshatra || nakshatraFor(planet.longitude),
+    });
+  });
+  return rows.map((row) => ({
+    ...row,
+    rashiLord: SIGN_RULERS[row.sign.index],
+    bhavaLord: SIGN_RULERS[(ascendant.index + row.house - 1) % 12],
+  }));
+}
+
+function placementTableHtml(chart, isNavamsa = false) {
+  return placementRows(chart, isNavamsa).map((row) => `
     <tr>
-      <td><span class="planet-symbol"><span>${planet.symbol}</span><span>${planetDisplay(planet)}</span></span></td>
-      <td>${planet.sign.symbol} ${localize(planet.sign)}</td>
-      <td>${formatDegree(planet.sign.degree)}</td>
-      <td>${planet.house}</td>
+      <td><span class="planet-symbol"><span>${row.symbol}</span><span>${planetDisplay(row)}</span></span></td>
+      <td>${row.sign.symbol} ${localize(row.sign)}</td>
+      <td>${formatAbsoluteDegree(row.longitude)}</td>
+      <td>${formatDegree(row.degree)}</td>
+      <td>${row.house}</td>
+      <td>${localize(row.nakshatra)}</td>
+      <td>${row.nakshatra.pada}</td>
+      <td>${planetLabelByKey(row.rashiLord)}</td>
+      <td>${planetLabelByKey(row.nakshatra.lord)}</td>
+      <td>${planetLabelByKey(row.bhavaLord)}</td>
     </tr>`).join("");
 }
 
-function renderSouthChart(chart) {
-  const grid = $("#chartGrid");
+function renderPlanetTable(chart) {
+  $("#planetTable").innerHTML = placementTableHtml(chart, false);
+}
+
+function renderNavamsaTable(chart) {
+  $("#navamsaTable").innerHTML = placementTableHtml(chart, true);
+}
+
+function renderChartGrid(chart, targetId, isNavamsa, referenceIndex = null, referenceLabel = "ASC") {
+  const grid = $(targetId);
   grid.innerHTML = "";
+  grid.dataset = grid.dataset || {};
+  grid.dataset.style = state.chartStyle;
+  const layer = isNavamsa ? chart.navamsa : chart;
+  const lagnaIndex = referenceIndex === null ? layer.lagna.index : referenceIndex;
   const positions = [
     { sign: 11, row: 1, col: 1 }, { sign: 0, row: 1, col: 2 }, { sign: 1, row: 1, col: 3 }, { sign: 2, row: 1, col: 4 },
     { sign: 10, row: 2, col: 1 }, { sign: 3, row: 2, col: 4 }, { sign: 9, row: 3, col: 1 }, { sign: 4, row: 3, col: 4 },
@@ -751,16 +863,51 @@ function renderSouthChart(chart) {
     cell.className = "chart-cell";
     cell.style.gridRow = row;
     cell.style.gridColumn = col;
-    if (sign === chart.lagna.index) cell.classList.add("lagna-cell");
+    if (sign === lagnaIndex) cell.classList.add("lagna-cell");
     const signInfo = SIGN_DATA[sign];
-    const inSign = chart.planets.filter((planet) => planet.sign.index === sign);
-    cell.innerHTML = `<span class="sign-number">${sign + 1} · ${signInfo.symbol}</span><span class="sign-name">${state.lang === "si" ? signInfo.si : signInfo.en}</span><div class="planet-badges">${inSign.map((planet) => `<span class="planet-badge" title="${planetDisplay(planet)}">${planet.symbol}</span>`).join("")}</div>${sign === chart.lagna.index ? `<span class="lagna-marker">${state.lang === "si" ? "ලග්න" : "ASC"}</span>` : ""}`;
+    const inSign = chart.planets.filter((planet) => (isNavamsa ? planet.navamsaSign.index : planet.sign.index) === sign);
+    const house = ((sign - lagnaIndex + 12) % 12) + 1;
+    const houseTag = state.chartStyle === "sri" ? `<span class="house-marker">H${house}</span>` : state.chartStyle === "bhrigu" ? `<span class="house-marker">Bhava ${house}</span>` : "";
+    const lagnaTag = sign === lagnaIndex ? `<span class="lagna-marker">${referenceLabel}</span>` : "";
+    cell.innerHTML = `<span class="sign-number">${sign + 1} · ${signInfo.symbol} ${houseTag}</span><span class="sign-name">${state.lang === "si" ? signInfo.si : signInfo.en}</span><div class="planet-badges">${inSign.map((planet) => `<span class="planet-badge" title="${planetDisplay(planet)}">${planet.symbol}</span>`).join("")}</div>${lagnaTag}`;
     grid.appendChild(cell);
   });
   const center = document.createElement("div");
   center.className = "chart-cell center";
-  center.innerHTML = `<div class="chart-center"><div>✦</div><div>${state.lang === "si" ? "ජන්ම කේන්දරය" : "Birth chart"}</div><small>${chart.ayanamsa.toFixed(2)}°</small></div>`;
+  center.innerHTML = `<div class="chart-center"><div>✦</div><div>${isNavamsa ? (state.lang === "si" ? "නවාංශය" : "Navamsa") : (state.lang === "si" ? "ජන්ම කේන්දරය" : "Birth chart")}</div><small>${isNavamsa ? "D9" : `Lahiri ${chart.ayanamsa.toFixed(2)}°`}</small></div>`;
   grid.appendChild(center);
+}
+
+function renderSouthChart(chart) {
+  renderChartGrid(chart, "#chartGrid", false);
+  renderChartGrid(chart, "#navamsaGrid", true);
+  const notes = {
+    south: state.lang === "si" ? "දකුණු ඉන්දීය fixed-sign layout එක — රාශි අංක සහ whole-sign භාව පෙන්වයි." : "South Indian fixed-sign layout with sign numbers and whole-sign houses.",
+    sri: state.lang === "si" ? "ශ්‍රී ලංකා භාව පෙන්වන ආකෘතිය — Lagna, රාශි සහ භාව අංක එකට පෙන්වයි." : "Sri Lankan presentation with Lagna, signs and house numbers together.",
+    bhrigu: state.lang === "si" ? "භෘගු-style placement view — ග්‍රහ පිහිටීම්, භාව අංක සහ විස්තර table එක සමඟ කියවීමට සකසා ඇත." : "Bhrigu-style placement view, paired with the complete placement tables below.",
+  };
+  $("#chartStyleNote").textContent = notes[state.chartStyle];
+  $$("[data-chart-style]").forEach((button) => button.classList.toggle("is-active", button.dataset.chartStyle === state.chartStyle));
+}
+
+function renderSudarshana(chart) {
+  const sun = chart.planets.find((planet) => planet.key === "Sun");
+  renderChartGrid(chart, "#sudarshanaLagna", false, chart.lagna.index, state.lang === "si" ? "ල" : "L");
+  renderChartGrid(chart, "#sudarshanaMoon", false, chart.rashi.index, state.lang === "si" ? "ච" : "M");
+  renderChartGrid(chart, "#sudarshanaSun", false, sun.sign.index, state.lang === "si" ? "ර" : "S");
+}
+
+function renderSpecialLagnas(chart) {
+  $("#specialLagnaTable").innerHTML = chart.specialLagnas.map((item) => `
+    <tr><td>${state.lang === "si" ? item.si : item.en}</td><td>${item.sign.symbol} ${localize(item.sign)}</td><td>${formatDegree(item.sign.degree)}</td><td>${localize(item.nakshatra)}</td><td>${item.nakshatra.pada}</td></tr>`).join("");
+}
+
+function renderVargaSummary(chart) {
+  const items = [
+    ["D1", chart.lagna, chart.lagnaLongitude, state.lang === "si" ? "රාශි / මූලික ජීවිත රටාව" : "Rāśi / core life pattern"],
+    ["D9", chart.navamsa.lagna, chart.navamsa.lagnaLongitude, state.lang === "si" ? "නවාංශ / අභ්‍යන්තර ශක්තිය" : "Navāṃśa / inner strength"],
+  ];
+  $("#vargaSummary").innerHTML = items.map(([key, sign, longitude, text]) => `<div class="varga-item"><strong>${key} · ${sign.symbol} ${localize(sign)}</strong><span>${formatDegree(sign.degree)} · ${text}</span></div>`).join("") + `<p class="varga-note">${state.lang === "si" ? "D9 ගණනය sign එකේ අංශක 9 කොටස්, sidereal Lahiri සහ whole-sign භාව මත පදනම් වේ." : "D9 uses the nine divisions of each sidereal sign with Lahiri and whole-sign houses."}</p>`;
 }
 
 function renderDasha(chart) {
@@ -876,6 +1023,11 @@ $("#languageToggle").addEventListener("click", () => {
   state.lang = state.lang === "si" ? "en" : "si";
   applyLanguage();
 });
+
+$$('[data-chart-style]').forEach((button) => button.addEventListener("click", () => {
+  state.chartStyle = button.dataset.chartStyle;
+  if (state.chart) renderSouthChart(state.chart);
+}));
 
 $("#countrySelect").addEventListener("change", (event) => {
   state.countryCode = event.target.value;
