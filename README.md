@@ -1,10 +1,26 @@
-# Jothishyahttps-github.com-USERNAME-REPOSITORY
-Privacy-focused Sinhala/English Vedic astrology birth chart calculator with Lahiri Sidereal calculations.
-cd "C:\Users\ayesh\Documents\Codex\2026-10-08\sider-scholar-plugin-app-6948b485f5bc8191adb4df13f369cec7-openai\outputs\jyothishya-chart"
+# Jyothishya — Sinhala/English Birth Chart Calculator
 
-git init
-git add .
-git commit -m "Add Jyothishya birth chart calculator"
-git branch -M main
-git remote add origin https://github.com/YOUR_USERNAME/jyothishya-chart.git
-git push -u origin main
+Open `index.html` in a modern browser or serve this folder from any static web host.
+
+## What it does
+
+- Calculates a browser-only Vedic/Sidereal chart using Lahiri ayanamsa and whole-sign houses.
+- Shows Lagna, Moon sign/Rashi, Nakshatra, planetary signs/degrees, houses, a visual Rāśi chart and Vimshottari dasha timeline.
+- Supports Sinhala/English UI switching and Sri Lankan city presets plus custom coordinates.
+- Does not send or save birth data. The Astronomy Engine library is loaded client-side from jsDelivr.
+
+## Local preview
+
+Because browsers restrict some module and asset behavior when opening files directly, a static server is recommended:
+
+```text
+python -m http.server 8080 --directory jyothishya-chart
+```
+
+Then open `http://localhost:8080`.
+
+## Calculation notes
+
+The site uses Astronomy Engine for geocentric ecliptic positions, applies a Lahiri/Chitrapaksha ayanamsa approximation, derives the ascendant from local sidereal time, and calculates whole-sign houses and Vimshottari mahadasha periods. Compare results with an established calculator when using the site for study; different ephemerides, ayanamsa variants and time-zone records can produce small differences.
+
+This is an educational presentation of traditional astrology calculations, not a scientific prediction or professional medical, legal or financial advice.

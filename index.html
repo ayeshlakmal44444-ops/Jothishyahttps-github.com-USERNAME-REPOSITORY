@@ -1,0 +1,244 @@
+<!doctype html>
+<html lang="si">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta
+      name="description"
+      content="Sinhala and English Vedic sidereal birth chart calculator. Your birth data stays in your browser."
+    />
+    <title>Jyothishya | ජන්ම පත්‍රය</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Noto+Sans+Sinhala:wght@400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="styles.css" />
+    <script src="https://cdn.jsdelivr.net/npm/astronomy-engine@2.1.2/astronomy.browser.min.js"></script>
+    <script defer src="app.js"></script>
+  </head>
+  <body>
+    <header class="site-header">
+      <a class="brand" href="#top" aria-label="Jyothishya home">
+        <span class="brand-mark">✦</span>
+        <span>
+          <strong>Jyothishya</strong>
+          <small data-i18n="brandSub">ජන්ම පත්‍රය</small>
+        </span>
+      </a>
+      <nav class="desktop-nav" aria-label="Main navigation">
+        <a href="#calculator" data-i18n="navCalculator">ගණනය කරන්න</a>
+        <a href="#method" data-i18n="navMethod">ක්‍රමවේදය</a>
+        <a href="#faq" data-i18n="navFaq">ප්‍රශ්න</a>
+      </nav>
+      <button id="languageToggle" class="language-toggle" type="button" aria-label="Switch language">
+        <span class="lang-si">සිං</span><span class="lang-divider">/</span><span class="lang-en">EN</span>
+      </button>
+    </header>
+
+    <main id="top">
+      <section class="hero section-shell">
+        <div class="hero-copy">
+          <p class="eyebrow" data-i18n="heroEyebrow">ඔබේ අහස • ඔබේ කතාව</p>
+          <h1 data-i18n="heroTitle">ඔබේ ජන්ම පත්‍රය<br /><em>සරලව දැනගන්න.</em></h1>
+          <p class="hero-lede" data-i18n="heroLead">
+            උපන් දිනය, වේලාව සහ ස්ථානය ඇතුළත් කරන්න. Vedic/Sidereal ක්‍රමයට ඔබේ Lagna, Rashi, Nakshatra සහ ග්‍රහ පිහිටීම් browser එක තුළම ගණනය වේ.
+          </p>
+          <a class="button button-primary" href="#calculator" data-i18n="heroButton">ජන්ම පත්‍රය ගණනය කරන්න <span>↗</span></a>
+          <div class="hero-notes">
+            <span>◉ <span data-i18n="privateNote">දත්ත save නොවේ</span></span>
+            <span>✦ <span data-i18n="siderealNote">Lahiri Sidereal</span></span>
+          </div>
+        </div>
+        <div class="hero-art" aria-hidden="true">
+          <div class="orbital-orb orb-one"></div>
+          <div class="orbital-orb orb-two"></div>
+          <div class="orbital-orb orb-three"></div>
+          <div class="hero-star star-a">✦</div>
+          <div class="hero-star star-b">✦</div>
+          <div class="hero-star star-c">✧</div>
+          <div class="hero-card">
+            <span class="hero-card-label">LAGNA</span>
+            <strong>♎</strong>
+            <span class="hero-card-small">Tula / Libra</span>
+          </div>
+        </div>
+      </section>
+
+      <section id="calculator" class="calculator-section section-shell">
+        <div class="section-heading">
+          <p class="eyebrow" data-i18n="calcEyebrow">01 / ගණනය</p>
+          <h2 data-i18n="calcTitle">ඔබේ උපන් තොරතුරු</h2>
+          <p data-i18n="calcLead">නිවැරදි වේලාව සහ ස්ථානය භාවිතා කළ විට Lagna සහ houses වඩාත් නිවැරදි වේ.</p>
+        </div>
+        <form id="chartForm" class="calculator-card" novalidate>
+          <div class="form-grid">
+            <label class="field">
+              <span data-i18n="dateLabel">උපන් දිනය / Birth date</span>
+              <input id="birthDate" name="birthDate" type="date" required />
+            </label>
+            <label class="field">
+              <span data-i18n="timeLabel">උපන් වේලාව / Birth time</span>
+              <input id="birthTime" name="birthTime" type="time" value="12:00" required />
+            </label>
+          </div>
+
+          <label class="checkbox-row">
+            <input id="timeUnknown" type="checkbox" />
+            <span data-i18n="timeUnknown">උපන් වේලාව නොදනී / I don’t know the exact time</span>
+          </label>
+
+          <label class="field">
+            <span data-i18n="placeLabel">උපන් ස්ථානය / Birth place</span>
+            <select id="birthPlace" name="birthPlace">
+              <option value="colombo">කොළඹ / Colombo</option>
+              <option value="kandy">මහනුවර / Kandy</option>
+              <option value="galle">ගාල්ල / Galle</option>
+              <option value="jaffna">යාපනය / Jaffna</option>
+              <option value="kurunegala">කුරුණෑගල / Kurunegala</option>
+              <option value="anuradhapura">අනුරාධපුර / Anuradhapura</option>
+              <option value="custom">වෙනත් ස්ථානයක් / Custom coordinates</option>
+            </select>
+          </label>
+
+          <div id="customLocation" class="custom-location is-hidden">
+            <label class="field">
+              <span data-i18n="latitudeLabel">Latitude</span>
+              <input id="latitude" type="number" step="0.0001" value="6.9271" />
+            </label>
+            <label class="field">
+              <span data-i18n="longitudeLabel">Longitude</span>
+              <input id="longitude" type="number" step="0.0001" value="79.8612" />
+            </label>
+            <label class="field">
+              <span data-i18n="utcLabel">UTC offset</span>
+              <input id="utcOffset" type="number" step="0.25" value="5.5" />
+            </label>
+          </div>
+
+          <div class="form-actions">
+            <button class="button button-primary" type="submit"><span data-i18n="calculateButton">ගණනය කරන්න</span> <span>✦</span></button>
+            <button id="resetButton" class="button button-ghost" type="button" data-i18n="resetButton">ආපසු හිස් කරන්න</button>
+          </div>
+          <p id="formMessage" class="form-message" role="alert" aria-live="polite"></p>
+        </form>
+      </section>
+
+      <section id="results" class="results-section section-shell is-hidden" aria-live="polite">
+        <div class="results-heading">
+          <div>
+            <p class="eyebrow" data-i18n="resultEyebrow">02 / ඔබේ ප්‍රතිඵල</p>
+            <h2 id="resultTitle">ජන්ම පත්‍රය</h2>
+            <p id="resultMeta" class="result-meta"></p>
+          </div>
+          <span id="methodBadge" class="method-badge">Sidereal · Lahiri</span>
+        </div>
+
+        <div id="timeWarning" class="notice notice-warning is-hidden"></div>
+        <div id="engineWarning" class="notice notice-warning is-hidden" data-i18n="engineWarning"></div>
+
+        <div class="summary-grid">
+          <article class="summary-card accent-card">
+            <span class="summary-label" data-i18n="lagnaLabel">Lagna / ලග්නය</span>
+            <strong id="lagnaValue">—</strong>
+            <small id="lagnaDegree">—</small>
+          </article>
+          <article class="summary-card">
+            <span class="summary-label" data-i18n="rashiLabel">Rashi / රාශිය</span>
+            <strong id="rashiValue">—</strong>
+            <small id="rashiDegree">—</small>
+          </article>
+          <article class="summary-card">
+            <span class="summary-label" data-i18n="nakshatraLabel">Nakshatra / නැකත</span>
+            <strong id="nakshatraValue">—</strong>
+            <small id="nakshatraPada">—</small>
+          </article>
+          <article class="summary-card">
+            <span class="summary-label" data-i18n="dashaLabel">Current Mahadasha</span>
+            <strong id="dashaValue">—</strong>
+            <small id="dashaDates">—</small>
+          </article>
+        </div>
+
+        <div class="result-columns">
+          <article class="panel chart-panel">
+            <div class="panel-heading">
+              <div>
+                <p class="eyebrow">RĀŚI</p>
+                <h3 data-i18n="chartTitle">ජන්ම කේන්දරය</h3>
+              </div>
+              <span class="panel-caption" data-i18n="chartCaption">Whole-sign houses</span>
+            </div>
+            <div id="chartGrid" class="south-chart" aria-label="Birth chart visualization"></div>
+            <p class="chart-legend"><span class="legend-dot"></span><span data-i18n="chartLegend">ග්‍රහයන් ඔවුන්ගේ sidereal රාශි තුළ පෙන්වා ඇත.</span></p>
+          </article>
+
+          <article class="panel planet-panel">
+            <div class="panel-heading">
+              <div>
+                <p class="eyebrow">GRAHAS</p>
+                <h3 data-i18n="planetTitle">ග්‍රහ පිහිටීම්</h3>
+              </div>
+            </div>
+            <div class="table-wrap">
+              <table>
+                <thead>
+                  <tr><th data-i18n="planetHead">ග්‍රහයා</th><th data-i18n="signHead">රාශිය</th><th data-i18n="degreeHead">අංශක</th><th data-i18n="houseHead">භාවය</th></tr>
+                </thead>
+                <tbody id="planetTable"></tbody>
+              </table>
+            </div>
+          </article>
+        </div>
+
+        <article class="panel dasha-panel">
+          <div class="panel-heading">
+            <div>
+              <p class="eyebrow">TIMELINE</p>
+              <h3 data-i18n="dashaTitle">Vimshottari දශා</h3>
+            </div>
+            <span class="panel-caption" data-i18n="dashaCaption">Birth-star based timing</span>
+          </div>
+          <div id="dashaTimeline" class="dasha-timeline"></div>
+        </article>
+
+        <div class="result-disclaimer">
+          <strong data-i18n="disclaimerTitle">සටහන</strong>
+          <span data-i18n="disclaimerText">මෙය පාරම්පරික/සංස්කෘතික ජෝතිෂ්‍ය ක්‍රම මත පදනම් වූ educational calculation එකකි. වෛද්‍ය, නීතිමය හෝ මූල්‍ය තීරණ සඳහා මෙය එකම පදනම කර නොගන්න.</span>
+        </div>
+      </section>
+
+      <section id="method" class="method-section section-shell">
+        <div class="section-heading">
+          <p class="eyebrow" data-i18n="methodEyebrow">03 / ක්‍රමවේදය</p>
+          <h2 data-i18n="methodTitle">සංඛ්‍යා ගණනය වන්නේ කෙසේද?</h2>
+        </div>
+        <div class="method-grid">
+          <article class="method-card"><span>01</span><h3 data-i18n="methodOneTitle">අහසේ පිහිටීම</h3><p data-i18n="methodOneText">උපන් මොහොතේ Sun, Moon සහ planets හි apparent ecliptic positions ගණනය කරයි.</p></article>
+          <article class="method-card"><span>02</span><h3 data-i18n="methodTwoTitle">Sidereal correction</h3><p data-i18n="methodTwoText">Lahiri ayanamsa භාවිතයෙන් tropical positions sidereal රාශිවලට පරිවර්තනය කරයි.</p></article>
+          <article class="method-card"><span>03</span><h3 data-i18n="methodThreeTitle">ඔබේ chart එක</h3><p data-i18n="methodThreeText">Lagna, houses, Nakshatra සහ Vimshottari දශා එකම browser session එක තුළ පෙන්වයි.</p></article>
+        </div>
+      </section>
+
+      <section id="faq" class="faq-section section-shell">
+        <div class="section-heading">
+          <p class="eyebrow" data-i18n="faqEyebrow">04 / FAQ</p>
+          <h2 data-i18n="faqTitle">දැනගත යුතු දේ</h2>
+        </div>
+        <div class="faq-list">
+          <details open><summary data-i18n="faqOneQ">මගේ birth data save වෙනවාද?</summary><p data-i18n="faqOneA">නැහැ. මෙම version එකේ calculation browser එක තුළම සිදුවන අතර server/database එකකට යවන්නේ නැහැ.</p></details>
+          <details><summary data-i18n="faqTwoQ">වේලාව නොදන්නේ නම්?</summary><p data-i18n="faqTwoA">Moon sign සහ planetary signs පෙන්විය හැකි නමුත් Lagna සහ houses provisional ලෙස සලකන්න. හොඳම ප්‍රතිඵලයට birth certificate එකේ වේලාව භාවිතා කරන්න.</p></details>
+          <details><summary data-i18n="faqThreeQ">මෙය scientific prediction එකක්ද?</summary><p data-i18n="faqThreeA">නැහැ. මෙය Vedic astrology හි සම්ප්‍රදායික ගණනයක් පෙන්වන educational tool එකකි; future certainty එකක් ලෙස භාවිතා නොකරන්න.</p></details>
+        </div>
+      </section>
+    </main>
+
+    <footer class="site-footer">
+      <div class="section-shell footer-inner">
+        <div><strong>Jyothishya</strong><p data-i18n="footerText">ඔබේ උපන් අහස, ඔබට තේරෙන භාෂාවකින්.</p></div>
+        <span>Browser-only · Sidereal/Lahiri</span>
+      </div>
+    </footer>
+  </body>
+</html>
